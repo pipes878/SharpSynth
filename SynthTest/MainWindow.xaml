@@ -1,0 +1,14 @@
+﻿<Window x:Class="SynthTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+	<StackPanel>
+		<Slider Minimum="-4" Maximum="4" Value="{Binding Frequency}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
+		<Slider Minimum="0" Maximum="2" Value="{Binding Scale1}"></Slider>
+		<Slider Minimum="0" Maximum="2" Value="{Binding Scale2}"></Slider>
+		<Slider Minimum="0" Maximum="2" Value="{Binding Scale3}"></Slider>
+	</StackPanel>
+</Window>
