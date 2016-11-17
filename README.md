@@ -1,0 +1,2 @@
+# SharpSynth
+Synthesizer emulation library
