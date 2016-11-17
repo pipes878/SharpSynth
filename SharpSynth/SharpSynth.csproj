@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="AmplifierAttenuator.cs" />
     <Compile Include="ControlInput.cs" />
+    <Compile Include="ISynthComponent.cs" />
+    <Compile Include="LinearFrequencyConverter.cs" />
     <Compile Include="Mixer.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

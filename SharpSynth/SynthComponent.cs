@@ -1,9 +1,10 @@
 ﻿namespace SharpSynth
 {
-	public abstract class SynthComponent
+	public abstract class SynthComponent : ISynthComponent
 	{
 		private long generatedTimeBase;
 		private float[] generatedBuffer;
+		private int generatedCount;
 
 		/// <summary>
 		/// Process the synth component
@@ -13,13 +14,14 @@
 		/// <returns>The generated samples.</returns>
 		public float[] GenerateSamples(int count, long timeBase)
 		{
-			if (generatedTimeBase != timeBase || generatedBuffer == null || generatedBuffer.Length < count)
+			if (generatedTimeBase != timeBase || generatedBuffer == null || generatedBuffer.Length < count || generatedCount < count)
 			{
 				if (generatedBuffer == null || generatedBuffer.Length < count)
 					generatedBuffer = new float[count];
 
 				GenerateSamples(generatedBuffer, count, timeBase);
 				generatedTimeBase = timeBase;
+				generatedCount = count;
 			}
 
 			return generatedBuffer;

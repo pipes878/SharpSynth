@@ -10,7 +10,7 @@
 		/// <summary>
 		/// The amplifier input.
 		/// </summary>
-		public SynthComponent Input { get; set; }
+		public ISynthComponent Input { get; set; }
 
 		#region Implementation of ISynthComponent
 

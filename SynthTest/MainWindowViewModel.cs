@@ -7,40 +7,37 @@ namespace SynthTest
 {
 	public class MainWindowViewModel : IDisposable
 	{
-		private readonly Oscillator sinWave = new Oscillator { Shape = OscillatorShape.Square, Scale = .3f };
-		private readonly Oscillator rampWave = new Oscillator { Shape = OscillatorShape.Triangle, Frequency = 220, Scale = .2f, PhaseOffset = 0f };
-		private readonly Oscillator rampWave2 = new Oscillator { Shape = OscillatorShape.Sin, Frequency = 110, Scale = .5f, PhaseOffset = 0f };
+		private readonly Oscillator LFO = new Oscillator {Shape = OscillatorShape.Ramp, Offset = 1, Scale = .5f};
+		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Square, Scale = .3f };
+		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Triangle, Scale = .2f, PhaseOffset = 0f };
+		private readonly Oscillator Osc3 = new Oscillator { Shape = OscillatorShape.Sin, Scale = .5f, PhaseOffset = 0f };
 		private WaveOut waveOut;
-		private float freq = 20;
 
 		public float Frequency
 		{
-			get { return freq; }
+			get { return LFO.Frequency.BaseValue; }
 			set
 			{
-				freq = value;
-				sinWave.Frequency = (float)(440 * Math.Pow(2, freq));
-				rampWave.Frequency = sinWave.Frequency / 2;
-				rampWave2.Frequency = rampWave.Frequency / 2;
+				LFO.Frequency.BaseValue = value;
 			}
 		}
 
 		public float Scale1
 		{
-			get { return sinWave.Scale; }
-			set { sinWave.Scale = value; }
+			get { return Osc1.Scale; }
+			set { Osc1.Scale = value; }
 		}
 
 		public float Scale2
 		{
-			get { return rampWave.Scale; }
-			set { rampWave.Scale = value; }
+			get { return Osc2.Scale; }
+			set { Osc2.Scale = value; }
 		}
 
 		public float Scale3
 		{
-			get { return rampWave2.Scale; }
-			set { rampWave2.Scale = value; }
+			get { return Osc3.Scale; }
+			set { Osc3.Scale = value; }
 		}
 
 		public void Play()
@@ -51,11 +48,17 @@ namespace SynthTest
 			waveOut = new WaveOut();
 			waveOut.DesiredLatency = 80;
 			waveOut.NumberOfBuffers = 4;
+			LFO.Frequency.BaseValue = .5f;
+			LFO.Scale = .5f;
+
+			Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
+			Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
+			Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
 
 			var mixer = new Mixer();
-			mixer.Inputs.Add(sinWave);
-			mixer.Inputs.Add(rampWave);
-			mixer.Inputs.Add(rampWave2);
+			mixer.Inputs.Add(Osc1);
+			mixer.Inputs.Add(Osc2);
+			mixer.Inputs.Add(Osc3);
 			Frequency = 0;
 			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(mixer)));
 			waveOut.Play();

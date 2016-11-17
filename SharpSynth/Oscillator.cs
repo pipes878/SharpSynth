@@ -36,7 +36,7 @@ namespace SharpSynth
 		/// <summary>
 		/// Frequency value in Hz.
 		/// </summary>
-		public float Frequency { get; set; } = 440;
+		public ControlInput Frequency { get; private set; } = new ControlInput {BaseValue = 440};
 
 		/// <summary>
 		/// Offset value of the oscillator will move the centre point. Default is 0.
@@ -63,14 +63,17 @@ namespace SharpSynth
 		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
-			var angleMult = TableSize * Frequency / 44100.0;
-			var phasedAngle = angle + (PhaseOffset * TableSize);
+			var f = Frequency.GenerateSamples(count, timeBase);
+
+			var phaseOffset = PhaseOffset * TableSize;
 			for (var i = 0; i < count; i++)
 			{
-				buffer[i] = Offset + GenerateSample((int)(phasedAngle + i * angleMult) & (TableSize - 1)) * Scale;
+				buffer[i] = Offset + GenerateSample((int)(phaseOffset + angle) & (TableSize - 1)) * Scale;
+				angle += f[i] * TableSize / 44100.0;
+				if (angle > TableSize)
+					angle -= TableSize;
 			}
 
-			angle += count * angleMult;
 			while (angle > TableSize)
 				angle -= TableSize;
 		}
