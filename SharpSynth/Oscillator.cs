@@ -36,22 +36,22 @@ namespace SharpSynth
 		/// <summary>
 		/// Frequency value in Hz.
 		/// </summary>
-		public ControlInput Frequency { get; private set; } = new ControlInput {BaseValue = 440};
+		public ControlInput Frequency { get; } = new ControlInput { BaseValue = 440 };
 
 		/// <summary>
-		/// Offset value of the oscillator will move the centre point. Default is 0.
+		/// The signal will oscillate evenly around this point. Default is 0.
 		/// </summary>
-		public float Offset { get; set; } = 0;
+		public ControlInput Level { get; } = new ControlInput { BaseValue = 0 };
 
 		/// <summary>
-		/// Scale value of the oscillator will multiply the output value after offset is applied. Default is 1.
+		/// Scale value of the oscillator will multiply the output value after <see cref="Level"/> is applied. Default is 1.
 		/// </summary>
-		public float Scale { get; set; } = 1;
+		public ControlInput Scale { get; } = new ControlInput { BaseValue = 1 };
 
 		/// <summary>
 		/// The phase offset of the waveform. A value of 1.0 is a full phase, 0.5 is half phase.
 		/// </summary>
-		public float PhaseOffset { get; set; } = 0;
+		public ControlInput PhaseOffset { get; } = new ControlInput { BaseValue = 0 };
 
 		#region Implementation of ISynthComponent
 
@@ -63,13 +63,15 @@ namespace SharpSynth
 		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
-			var f = Frequency.GenerateSamples(count, timeBase);
+			var frequency = Frequency.GenerateSamples(count, timeBase);
+			var level = Level.GenerateSamples(count, timeBase);
+			var scale = Scale.GenerateSamples(count, timeBase);
+			var phaseOffset = PhaseOffset.GenerateSamples(count, timeBase);
 
-			var phaseOffset = PhaseOffset * TableSize;
 			for (var i = 0; i < count; i++)
 			{
-				buffer[i] = Offset + GenerateSample((int)(phaseOffset + angle) & (TableSize - 1)) * Scale;
-				angle += f[i] * TableSize / 44100.0;
+				buffer[i] = level[i] + GenerateSample((int)(phaseOffset[i] * TableSize + angle) & (TableSize - 1)) * scale[i];
+				angle += frequency[i] * TableSize / 44100.0;
 				if (angle > TableSize)
 					angle -= TableSize;
 			}

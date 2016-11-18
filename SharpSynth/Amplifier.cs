@@ -1,11 +1,11 @@
 ﻿namespace SharpSynth
 {
-	public class AmplifierAttenuator : SynthComponent
+	public class Amplifier : SynthComponent
 	{
 		/// <summary>
 		/// The gain of the amplifier. If this value is a fraction then the amp will be an attenuator.
 		/// </summary>
-		public float Gain { get; set; } = 1;
+		public ControlInput Gain { get; } = new ControlInput { BaseValue = 1 };
 
 		/// <summary>
 		/// The amplifier input.
@@ -29,9 +29,11 @@
 				return;
 			}
 
+			var gain = Gain.GenerateSamples(count, timeBase);
+
 			var inputData = Input.GenerateSamples(count, timeBase);
 			for (var i = 0; i < count; i++)
-				buffer[i] = inputData[i] * Gain;
+				buffer[i] = inputData[i] * gain[i];
 		}
 
 		#endregion

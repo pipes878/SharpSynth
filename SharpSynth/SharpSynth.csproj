@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmplifierAttenuator.cs" />
+    <Compile Include="Amplifier.cs" />
     <Compile Include="ControlInput.cs" />
+    <Compile Include="GateGenerator.cs" />
     <Compile Include="ISynthComponent.cs" />
     <Compile Include="LinearFrequencyConverter.cs" />
     <Compile Include="Mixer.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SynthComponent.cs" />
     <Compile Include="SynthToSampleProvider.cs" />
+    <Compile Include="TriggerGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
