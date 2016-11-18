@@ -11,6 +11,10 @@ namespace SynthTest
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
 		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Sin };
 		private readonly Oscillator Osc3 = new Oscillator { Shape = OscillatorShape.Sin };
+
+		private readonly TriggerGenerator trigger = new TriggerGenerator();
+		private readonly Amplifier Amp = new Amplifier();
+
 		private WaveOut waveOut;
 
 		public float Frequency
@@ -63,8 +67,14 @@ namespace SynthTest
 			mixer.Inputs.Add(Osc1);
 			mixer.Inputs.Add(Osc2);
 			mixer.Inputs.Add(Osc3);
+
+			Amp.Input = mixer;
+			Amp.Gain.Control = trigger;
+			Amp.Gain.BaseValue = 0;
+			trigger.Input = LFO;
+			trigger.TriggerThreshold.BaseValue = 1;
 			Frequency = 0;
-			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(mixer)));
+			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(Amp)));
 			waveOut.Play();
 		}
 
