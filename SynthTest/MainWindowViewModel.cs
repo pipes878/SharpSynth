@@ -7,12 +7,14 @@ namespace SynthTest
 {
 	public class MainWindowViewModel : IDisposable
 	{
+		private float pitch;
 		private readonly Oscillator LFO = new Oscillator { Shape = OscillatorShape.Ramp };
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
 		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Sin };
 		private readonly Oscillator Osc3 = new Oscillator { Shape = OscillatorShape.Sin };
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
+		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
 		private readonly Amplifier Amp = new Amplifier();
 
 		private WaveOut waveOut;
@@ -23,6 +25,19 @@ namespace SynthTest
 			set
 			{
 				LFO.Frequency.BaseValue = value;
+			}
+		}
+
+		public float Pitch
+		{
+			get { return pitch; }
+			set
+			{
+				pitch = value;
+				var pitch2 = (float)Math.Pow(2, pitch);
+				Osc1.Frequency.BaseValue = 440f * pitch2;
+				Osc2.Frequency.BaseValue = 220f * pitch2;
+				Osc3.Frequency.BaseValue = 110f * pitch2;
 			}
 		}
 
@@ -56,12 +71,13 @@ namespace SynthTest
 			LFO.Scale.BaseValue = .5f;
 			LFO.Level.BaseValue = 1;
 
-			Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
-			Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
-			Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
+			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
+			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
+			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
 			Scale1 = .5f;
 			Scale2 = .5f;
 			Scale3 = .5f;
+			Pitch = 0;
 
 			var mixer = new Mixer();
 			mixer.Inputs.Add(Osc1);
@@ -69,10 +85,13 @@ namespace SynthTest
 			mixer.Inputs.Add(Osc3);
 
 			Amp.Input = mixer;
-			Amp.Gain.Control = trigger;
+			Amp.Gain.Control = envelope;
 			Amp.Gain.BaseValue = 0;
 			trigger.Input = LFO;
 			trigger.TriggerThreshold.BaseValue = 1;
+			trigger.TriggerLength.BaseValue = .5f;
+			envelope.Input = trigger;
+
 			Frequency = 0;
 			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(Amp)));
 			waveOut.Play();

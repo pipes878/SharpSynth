@@ -71,7 +71,7 @@ namespace SharpSynth
 
 				while (i < count)
 				{
-					if (((lastValue < triggerTreshold[i]) ^ TriggerOnFallingEdge) && ((sampleData[i] > triggerTreshold[i]) ^ TriggerOnFallingEdge))
+					if (((lastValue < triggerTreshold[i]) ^ TriggerOnFallingEdge) && ((sampleData[i] >= triggerTreshold[i]) ^ TriggerOnFallingEdge))
 					{
 						triggerActivationTime = timeBase;
 						break;
