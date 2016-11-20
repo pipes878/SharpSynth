@@ -7,6 +7,7 @@
         Title="MainWindow" Height="350" Width="525">
 	<StackPanel>
 		<Slider Minimum="-4" Maximum="4" Value="{Binding Frequency}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
+		<Slider Minimum="-4" Maximum="4" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Scale1}"></Slider>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Scale2}"></Slider>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Scale3}"></Slider>
