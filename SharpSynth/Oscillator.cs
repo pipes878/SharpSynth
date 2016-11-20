@@ -14,7 +14,7 @@ namespace SharpSynth
 
 	public class Oscillator : SynthComponent
 	{
-		private const int TableBits = 4;
+		private const int TableBits = 20;
 		private const int TableSize = 1 << TableBits;
 		private const int TableMask = TableSize - 1;
 
