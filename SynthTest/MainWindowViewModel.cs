@@ -10,7 +10,7 @@ namespace SynthTest
 		private float pitch;
 		private readonly Oscillator LFO = new Oscillator { Shape = OscillatorShape.Ramp };
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
-		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Sin };
+		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Triangle };
 		private readonly Oscillator Osc3 = new Oscillator { Shape = OscillatorShape.Sin };
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();

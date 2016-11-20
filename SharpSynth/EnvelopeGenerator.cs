@@ -42,22 +42,22 @@ namespace SharpSynth
 		/// <summary>
 		/// The time the envelope will take to go from 0 to 1 in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlInput Attack { get; } = new ControlInput { BaseValue = .1f };
+		public ControlInput Attack { get; } = new ControlInput { BaseValue = .05f };
 
 		/// <summary>
 		/// The time the envelope will take to go from 1 to sustain level in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlInput Decay { get; } = new ControlInput { BaseValue = .2f };
+		public ControlInput Decay { get; } = new ControlInput { BaseValue = .1f };
 
 		/// <summary>
 		/// The level that the envelope will sustain at. Note that this value can be above 1 to have a sustain value above attack.
 		/// </summary>
-		public ControlInput Sustain { get; } = new ControlInput { BaseValue = 0.7f };
+		public ControlInput Sustain { get; } = new ControlInput { BaseValue = .5f };
 
 		/// <summary>
 		/// The time that the envelopw will take to release. Note that the rate of release is determined by the distance from sustain to 0.
 		/// </summary>
-		public ControlInput Release { get; } = new ControlInput { BaseValue = 1f };
+		public ControlInput Release { get; } = new ControlInput { BaseValue = .3f };
 
 		/// <summary>
 		/// The input used to trigger the envelope.
@@ -135,7 +135,7 @@ namespace SharpSynth
 
 						if (inc < 0)
 						{
-							if (buffer[i] < sustain[i])
+							if (buffer[i] > sustain[i])
 							{
 								buffer[i] = sustain[i];
 								phase = Phase.Sustain;
