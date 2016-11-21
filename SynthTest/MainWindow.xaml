@@ -23,6 +23,7 @@
 		<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"></Slider>
 		<TextBlock>Release</TextBlock>
 		<Slider Minimum="0" Maximum="5" Value="{Binding Release}"></Slider>
-
+		<TextBlock>Low Pass</TextBlock>
+		<Slider Minimum="10" Maximum="10000" Value="{Binding LowPassCutoff}"></Slider>
 	</StackPanel>
 </Window>

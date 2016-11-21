@@ -48,6 +48,7 @@
     <Compile Include="ControlInput.cs" />
     <Compile Include="Cutoff.cs" />
     <Compile Include="EnvelopeGenerator.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="GateGenerator.cs" />
     <Compile Include="ISynthComponent.cs" />
     <Compile Include="LinearFrequencyConverter.cs" />

@@ -14,6 +14,7 @@ namespace SynthTest
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
 		private readonly Amplifier Amp = new Amplifier();
+		private readonly Filter LowPassFilter = new Filter();
 
 		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
@@ -73,6 +74,12 @@ namespace SynthTest
 			set { envelope.Release.BaseValue = value; }
 		}
 
+		public float LowPassCutoff
+		{
+			get { return LowPassFilter.CutoffFrequency.BaseValue; }
+			set { LowPassFilter.CutoffFrequency.BaseValue = value; }
+		}
+
 		public void Play()
 		{
 			if (waveOut != null)
@@ -95,7 +102,9 @@ namespace SynthTest
 			//mixer.Inputs.Add(Osc1);
 			mixer.Inputs.Add(cutoff);
 
-			Amp.Input = mixer;
+			LowPassFilter.Input = mixer;
+
+			Amp.Input = LowPassFilter;
 			//Amp.Gain.Control = envelope;
 			Amp.Gain.BaseValue = .5f;
 			trigger.Input = LFO;

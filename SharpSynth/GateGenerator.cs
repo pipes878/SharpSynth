@@ -24,6 +24,13 @@
 		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
+			if (Input == null)
+			{
+				for (var i = 0; i < count; i++)
+					buffer[i++] = 0;
+				return;
+			}
+
 			var threshold = TriggerThreshold.GenerateSamples(count, timeBase);
 			var input = Input.GenerateSamples(count, timeBase);
 
