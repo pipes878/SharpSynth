@@ -3,13 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        xmlns:synthTest="clr-namespace:SynthTest"
+        mc:Ignorable="d"  d:DataContext="{d:DesignInstance synthTest:MainWindowViewModel}"
         Title="MainWindow" Height="350" Width="525">
 	<StackPanel>
-		<Slider Minimum="-4" Maximum="4" Value="{Binding Frequency}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
-		<Slider Minimum="-4" Maximum="4" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
-		<Slider Minimum="0" Maximum="1" Value="{Binding Scale1}"></Slider>
-		<Slider Minimum="0" Maximum="1" Value="{Binding Scale2}"></Slider>
-		<Slider Minimum="0" Maximum="1" Value="{Binding Scale3}"></Slider>
+		<TextBlock>LFO Frequency</TextBlock>
+		<Slider Minimum="0.1" Maximum="10" Value="{Binding Frequency}" ></Slider>
+		<TextBlock>Pitch</TextBlock>
+		<Slider Minimum="-3" Maximum="3" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
+		<TextBlock>Shape</TextBlock>
+		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>
+		<TextBlock>Trigger Length</TextBlock>
+		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
+		<TextBlock>Attack</TextBlock>
+		<Slider Minimum="0" Maximum="2" Value="{Binding Attack}"></Slider>
+		<TextBlock>Decay</TextBlock>
+		<Slider Minimum="0" Maximum="2" Value="{Binding Decay}"></Slider>
+		<TextBlock>Sustain</TextBlock>
+		<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"></Slider>
+		<TextBlock>Release</TextBlock>
+		<Slider Minimum="0" Maximum="5" Value="{Binding Release}"></Slider>
+
 	</StackPanel>
 </Window>

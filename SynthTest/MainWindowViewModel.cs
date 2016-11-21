@@ -10,13 +10,12 @@ namespace SynthTest
 		private float pitch;
 		private readonly Oscillator LFO = new Oscillator { Shape = OscillatorShape.Ramp };
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
-		private readonly Oscillator Osc2 = new Oscillator { Shape = OscillatorShape.Triangle };
-		private readonly Oscillator Osc3 = new Oscillator { Shape = OscillatorShape.Sin };
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
 		private readonly Amplifier Amp = new Amplifier();
 
+		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
 
 		public float Frequency
@@ -36,27 +35,42 @@ namespace SynthTest
 				pitch = value;
 				var pitch2 = (float)Math.Pow(2, pitch);
 				Osc1.Frequency.BaseValue = 440f * pitch2;
-				Osc2.Frequency.BaseValue = 220f * pitch2;
-				Osc3.Frequency.BaseValue = 110f * pitch2;
 			}
 		}
 
-		public float Scale1
+		public int Shape
 		{
-			get { return Osc1.Scale.BaseValue; }
-			set { Osc1.Scale.BaseValue = value; }
+			get { return (int)Osc1.Shape; }
+			set { Osc1.Shape = (OscillatorShape)value; }
 		}
 
-		public float Scale2
+		public float TriggerLength
 		{
-			get { return Osc2.Scale.BaseValue; }
-			set { Osc2.Scale.BaseValue = value; }
+			get { return trigger.TriggerLength.BaseValue; }
+			set { trigger.TriggerLength.BaseValue = value; }
 		}
 
-		public float Scale3
+		public float Attack
 		{
-			get { return Osc3.Scale.BaseValue; }
-			set { Osc3.Scale.BaseValue = value; }
+			get { return envelope.Attack.BaseValue; }
+			set { envelope.Attack.BaseValue = value; }
+		}
+
+		public float Decay
+		{
+			get { return envelope.Decay.BaseValue; }
+			set { envelope.Decay.BaseValue = value; }
+		}
+
+		public float Sustain
+		{
+			get { return envelope.Sustain.BaseValue; }
+			set { envelope.Sustain.BaseValue = value; }
+		}
+		public float Release
+		{
+			get { return envelope.Release.BaseValue; }
+			set { envelope.Release.BaseValue = value; }
 		}
 
 		public void Play()
@@ -74,23 +88,26 @@ namespace SynthTest
 			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
 			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
-			Scale1 = .5f;
-			Scale2 = .5f;
-			Scale3 = .5f;
+			Shape = 0;
 			Pitch = 0;
 
 			var mixer = new Mixer();
-			mixer.Inputs.Add(Osc1);
-			mixer.Inputs.Add(Osc2);
-			mixer.Inputs.Add(Osc3);
+			//mixer.Inputs.Add(Osc1);
+			mixer.Inputs.Add(cutoff);
 
 			Amp.Input = mixer;
-			Amp.Gain.Control = envelope;
-			Amp.Gain.BaseValue = 0;
+			//Amp.Gain.Control = envelope;
+			Amp.Gain.BaseValue = .5f;
 			trigger.Input = LFO;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
 			envelope.Input = trigger;
+			envelope.Attack.BaseValue = 0.03f;
+			envelope.Decay.BaseValue = .3f;
+			envelope.Sustain.BaseValue = .1f;
+
+			cutoff.Input = Osc1;
+			cutoff.CutoffThreshold.Control = envelope;
 
 			Frequency = 0;
 			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(Amp)));
