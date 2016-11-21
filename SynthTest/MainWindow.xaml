@@ -15,15 +15,17 @@
 		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>
 		<TextBlock>Trigger Length</TextBlock>
 		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
-		<TextBlock>Attack</TextBlock>
+		<!--<TextBlock>Attack</TextBlock>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Attack}"></Slider>
 		<TextBlock>Decay</TextBlock>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Decay}"></Slider>
 		<TextBlock>Sustain</TextBlock>
 		<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"></Slider>
 		<TextBlock>Release</TextBlock>
-		<Slider Minimum="0" Maximum="5" Value="{Binding Release}"></Slider>
+		<Slider Minimum="0" Maximum="5" Value="{Binding Release}"></Slider>-->
 		<TextBlock>Low Pass</TextBlock>
 		<Slider Minimum="10" Maximum="10000" Value="{Binding LowPassCutoff}"></Slider>
+		<TextBlock>High Pass</TextBlock>
+		<Slider Minimum="10" Maximum="10000" Value="{Binding HighPassCutoff}"></Slider>
 	</StackPanel>
 </Window>

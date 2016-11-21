@@ -2,12 +2,20 @@ using System;
 
 namespace SharpSynth
 {
+	public enum FilterType
+	{
+		HighPass,
+		LowPass
+	}
+
 	public class Filter : SynthComponent
 	{
 		private const float Dt = 1f / 44100.0f;
 
 		private float lastOutput;
 		private float lastInput;
+
+		public FilterType FilterType { get; set; }
 
 		public ControlInput CutoffFrequency { get; } = new ControlInput { BaseValue = 440 };
 
@@ -33,19 +41,31 @@ namespace SharpSynth
 			var input = Input.GenerateSamples(count, timeBase);
 			var cutoff = CutoffFrequency.GenerateSamples(count, timeBase);
 
-			for (var i = 0; i < count; i++)
+			if (FilterType == FilterType.HighPass)
 			{
-				var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
-				var alpha = Dt / (rc + Dt);
+				for (var i = 0; i < count; i++)
+				{
+					var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
+					var alpha = Dt / (rc + Dt);
 
-				// Low pass filter.
-//				lastOutput = lastOutput + alpha * (input[i] - lastOutput);
+					// High pass filter.
+					lastOutput = alpha * (lastOutput + input[i] - lastInput);
+					buffer[i] = lastOutput;
+					lastInput = input[i];
+				}
+			}
+			else
+			{
+				for (var i = 0; i < count; i++)
+				{
+					var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
+					var alpha = Dt / (rc + Dt);
 
-				// High pass filter.
-				lastOutput = alpha * (lastOutput + input[i] - lastInput);
-
-				buffer[i] = lastOutput;
-				lastInput = input[i];
+					// Low pass filter.
+					lastOutput = lastOutput + alpha * (input[i] - lastOutput);
+					buffer[i] = lastOutput;
+					lastInput = input[i];
+				}
 			}
 		}
 
