@@ -16,6 +16,7 @@ namespace SynthTest
 		private readonly Amplifier Amp = new Amplifier();
 		private readonly Filter LowPassFilter = new Filter { FilterType = FilterType.LowPass };
 		private readonly Filter HighPassFilter = new Filter { FilterType = FilterType.HighPass };
+		private readonly StepSequencer sequencer = new StepSequencer(4);
 
 		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
@@ -29,16 +30,16 @@ namespace SynthTest
 			}
 		}
 
-		public float Pitch
-		{
-			get { return pitch; }
-			set
-			{
-				pitch = value;
-				var pitch2 = (float)Math.Pow(2, pitch);
-				Osc1.Frequency.BaseValue = 440f * pitch2;
-			}
-		}
+		//public float Pitch
+		//{
+		//	get { return pitch; }
+		//	set
+		//	{
+		//		pitch = value;
+		//		var pitch2 = (float)Math.Pow(2, pitch);
+		//		Osc1.Frequency.BaseValue = 440f * pitch2;
+		//	}
+		//}
 
 		public int Shape
 		{
@@ -50,6 +51,30 @@ namespace SynthTest
 		{
 			get { return trigger.TriggerLength.BaseValue; }
 			set { trigger.TriggerLength.BaseValue = value; }
+		}
+
+		public float Sequencer0
+		{
+			get { return sequencer.ControlValues[0].BaseValue; }
+			set { sequencer.ControlValues[0].BaseValue = value; }
+		}
+
+		public float Sequencer1
+		{
+			get { return sequencer.ControlValues[1].BaseValue; }
+			set { sequencer.ControlValues[1].BaseValue = value; }
+		}
+
+		public float Sequencer2
+		{
+			get { return sequencer.ControlValues[2].BaseValue; }
+			set { sequencer.ControlValues[2].BaseValue = value; }
+		}
+
+		public float Sequencer3
+		{
+			get { return sequencer.ControlValues[3].BaseValue; }
+			set { sequencer.ControlValues[3].BaseValue = value; }
 		}
 
 		//public float Attack
@@ -104,7 +129,7 @@ namespace SynthTest
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
 			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
 			Shape = 0;
-			Pitch = 0;
+			//Pitch = 0;
 
 			var mixer = new Mixer();
 			//mixer.Inputs.Add(Osc1);
@@ -114,6 +139,8 @@ namespace SynthTest
 
 			LowPassFilter.Input = Osc1;
 			HighPassFilter.Input = Osc1;
+			sequencer.TriggerSource.Control = trigger;
+			Osc1.Frequency.Control = new LinearFrequencyConverter(110) { Input = sequencer };
 
 			Amp.Input = mixer;
 			//Amp.Gain.Control = envelope;

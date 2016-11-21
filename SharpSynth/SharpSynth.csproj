@@ -55,6 +55,7 @@
     <Compile Include="Mixer.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepSequencer.cs" />
     <Compile Include="SynthComponent.cs" />
     <Compile Include="SynthToSampleProvider.cs" />
     <Compile Include="TriggerGenerator.cs" />

@@ -9,12 +9,19 @@
 	<StackPanel>
 		<TextBlock>LFO Frequency</TextBlock>
 		<Slider Minimum="0.1" Maximum="10" Value="{Binding Frequency}" ></Slider>
-		<TextBlock>Pitch</TextBlock>
-		<Slider Minimum="-3" Maximum="3" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>
+		<!--<TextBlock>Pitch</TextBlock>
+		<Slider Minimum="-3" Maximum="3" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>-->
 		<TextBlock>Shape</TextBlock>
 		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>
 		<TextBlock>Trigger Length</TextBlock>
 		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
+		<TextBlock>Sequencer</TextBlock>
+		<UniformGrid Rows="1" Columns="4">
+			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer0}"></Slider>
+			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer1}"></Slider>
+			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer2}"></Slider>
+			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer3}"></Slider>
+		</UniformGrid>
 		<!--<TextBlock>Attack</TextBlock>
 		<Slider Minimum="0" Maximum="2" Value="{Binding Attack}"></Slider>
 		<TextBlock>Decay</TextBlock>
