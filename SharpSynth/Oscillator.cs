@@ -55,7 +55,7 @@ namespace SharpSynth
 		/// <summary>
 		/// Frequency value in Hz.
 		/// </summary>
-		public ControlInput Frequency { get; } = new ControlInput { BaseValue = 440 };
+		public ControlInput Frequency { get; } = new ControlInput { BaseValue = 0 };
 
 		/// <summary>
 		/// The signal will oscillate evenly around this point. Default is 0.

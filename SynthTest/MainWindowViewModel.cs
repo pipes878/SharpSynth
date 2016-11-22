@@ -12,11 +12,13 @@ namespace SynthTest
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
-		//private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
+		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
 		private readonly Amplifier Amp = new Amplifier();
 		private readonly Filter LowPassFilter = new Filter { FilterType = FilterType.LowPass };
 		private readonly Filter HighPassFilter = new Filter { FilterType = FilterType.HighPass };
 		private readonly StepSequencer sequencer = new StepSequencer(4);
+
+		private readonly Delay delay = new Delay();
 
 		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
@@ -77,28 +79,28 @@ namespace SynthTest
 			set { sequencer.ControlValues[3].BaseValue = value; }
 		}
 
-		//public float Attack
-		//{
-		//	get { return envelope.Attack.BaseValue; }
-		//	set { envelope.Attack.BaseValue = value; }
-		//}
+		public float Attack
+		{
+			get { return envelope.Attack.BaseValue; }
+			set { envelope.Attack.BaseValue = value; }
+		}
 
-		//public float Decay
-		//{
-		//	get { return envelope.Decay.BaseValue; }
-		//	set { envelope.Decay.BaseValue = value; }
-		//}
+		public float Decay
+		{
+			get { return envelope.Decay.BaseValue; }
+			set { envelope.Decay.BaseValue = value; }
+		}
 
-		//public float Sustain
-		//{
-		//	get { return envelope.Sustain.BaseValue; }
-		//	set { envelope.Sustain.BaseValue = value; }
-		//}
-		//public float Release
-		//{
-		//	get { return envelope.Release.BaseValue; }
-		//	set { envelope.Release.BaseValue = value; }
-		//}
+		public float Sustain
+		{
+			get { return envelope.Sustain.BaseValue; }
+			set { envelope.Sustain.BaseValue = value; }
+		}
+		public float Release
+		{
+			get { return envelope.Release.BaseValue; }
+			set { envelope.Release.BaseValue = value; }
+		}
 
 		public float LowPassCutoff
 		{
@@ -134,6 +136,7 @@ namespace SynthTest
 			var mixer = new Mixer();
 			//mixer.Inputs.Add(Osc1);
 			//mixer.Inputs.Add(cutoff);
+			//mixer.Inputs.Add(Osc1);
 			mixer.Inputs.Add(HighPassFilter);
 			mixer.Inputs.Add(LowPassFilter);
 
@@ -142,22 +145,24 @@ namespace SynthTest
 			sequencer.TriggerSource.Control = trigger;
 			Osc1.Frequency.Control = new LinearFrequencyConverter(110) { Input = sequencer };
 
+			delay.Input = Amp;
 			Amp.Input = mixer;
-			//Amp.Gain.Control = envelope;
-			Amp.Gain.BaseValue = .5f;
+			Amp.Gain.Control = envelope;
+			Amp.Gain.BaseValue = 0f;
 			trigger.Input = LFO;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
-			//envelope.Input = trigger;
-			//envelope.Attack.BaseValue = 0.03f;
-			//envelope.Decay.BaseValue = .3f;
-			//envelope.Sustain.BaseValue = .1f;
+
+			envelope.Input = trigger;
+			envelope.Attack.BaseValue = 0.03f;
+			envelope.Decay.BaseValue = .3f;
+			envelope.Sustain.BaseValue = .1f;
 
 			//cutoff.Input = Osc1;
 			//cutoff.CutoffThreshold.Control = envelope;
 
 			Frequency = 0;
-			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(Amp)));
+			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(delay)));
 			waveOut.Play();
 		}
 
