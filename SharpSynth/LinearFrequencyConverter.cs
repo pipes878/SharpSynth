@@ -26,6 +26,7 @@ namespace SharpSynth
 			{
 				for (var i = 0; i < count; i++)
 					buffer[i] = 0;
+				return;
 			}
 
 			var frequencies = BaseFrequency.GenerateSamples(count, timeBase);

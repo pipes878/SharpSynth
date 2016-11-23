@@ -35,6 +35,8 @@ namespace SharpSynth
 			{
 				for (var i = 0; i < count; i++)
 					buffer[i++] = 0;
+
+				lastOutput = 0;
 				return;
 			}
 
