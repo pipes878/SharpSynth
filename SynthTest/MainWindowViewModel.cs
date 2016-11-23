@@ -1,4 +1,7 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows.Data;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using SharpSynth;
@@ -8,7 +11,7 @@ namespace SynthTest
 	public class MainWindowViewModel : IDisposable
 	{
 		private float pitch;
-		private readonly Oscillator LFO = new Oscillator { Shape = OscillatorShape.Ramp };
+		private readonly Oscillator lfo = new Oscillator { Shape = OscillatorShape.Ramp };
 		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
@@ -23,12 +26,14 @@ namespace SynthTest
 		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
 
+		public ObservableCollection<ISynthComponent> ControllableComponents { get; } = new ObservableCollection<ISynthComponent>();
+
 		public float Frequency
 		{
-			get { return LFO.Frequency.BaseValue; }
+			get { return lfo.Frequency.BaseValue; }
 			set
 			{
-				LFO.Frequency.BaseValue = value;
+				lfo.Frequency.BaseValue = value;
 			}
 		}
 
@@ -120,12 +125,16 @@ namespace SynthTest
 			if (waveOut != null)
 				return;
 
+			ControllableComponents.Add(lfo);
+			ControllableComponents.Add(delay);
+
 			waveOut = new WaveOut();
 			waveOut.DesiredLatency = 80;
 			waveOut.NumberOfBuffers = 4;
-			LFO.Frequency.BaseValue = .5f;
-			LFO.Scale.BaseValue = .5f;
-			LFO.Level.BaseValue = 1;
+
+			lfo.Frequency.BaseValue = 5f;
+			lfo.Scale.BaseValue = 1f;
+			lfo.Level.BaseValue = .5f;
 
 			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
@@ -149,7 +158,7 @@ namespace SynthTest
 			Amp.Input = mixer;
 			Amp.Gain.Control = envelope;
 			Amp.Gain.BaseValue = 0f;
-			trigger.Input = LFO;
+			trigger.Input = lfo;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
 
@@ -171,4 +180,37 @@ namespace SynthTest
 			waveOut.Dispose();
 		}
 	}
+
+	public class EnumDataConverter : IValueConverter
+	{
+		#region Implementation of IValueConverter
+
+		/// <summary>Converts a value. </summary>
+		/// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+		/// <param name="value">The value produced by the binding source.</param>
+		/// <param name="targetType">The type of the binding target property.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (!value.GetType().IsEnum)
+				throw new InvalidOperationException("Target type must be an enum");
+
+			return value;
+		}
+
+		/// <summary>Converts a value. </summary>
+		/// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+		/// <param name="value">The value that is produced by the binding target.</param>
+		/// <param name="targetType">The type to convert to.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return value;
+		}
+
+		#endregion
+	}
+
 }

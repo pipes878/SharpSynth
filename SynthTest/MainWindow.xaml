@@ -4,15 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:synthTest="clr-namespace:SynthTest"
+        xmlns:sharpSynth="clr-namespace:SharpSynth;assembly=SharpSynth"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"  d:DataContext="{d:DesignInstance synthTest:MainWindowViewModel}"
         Title="MainWindow" Height="350" Width="525">
+	<Window.Resources>
+		<synthTest:EnumDataConverter x:Key="enumConverter"></synthTest:EnumDataConverter>
+		<DataTemplate DataType="{x:Type sharpSynth:Oscillator}">
+			<DataTemplate.Resources>
+				<ObjectDataProvider x:Key="shapeEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+					<ObjectDataProvider.MethodParameters>
+						<x:Type TypeName="sharpSynth:OscillatorShape"/>
+					</ObjectDataProvider.MethodParameters>
+				</ObjectDataProvider>
+			</DataTemplate.Resources>
+			<StackPanel>
+				<TextBlock Text="Oscillator"/>
+				<UniformGrid Rows="2" Columns="4">
+					<TextBlock Text="Shape"/>
+					<TextBlock Text="Frequency"/>
+					<TextBlock Text="Scale"/>
+					<TextBlock Text="Level"/>
+					<ComboBox ItemsSource="{Binding Source={StaticResource shapeEnum}}" SelectedValue="{Binding Path=Shape, Converter={StaticResource enumConverter}}"/>
+					<Slider Minimum="0" Maximum="20" Value="{Binding Frequency.BaseValue}"/>
+					<Slider Minimum="0" Maximum="2" Value="{Binding Scale.BaseValue}"/>
+					<Slider Minimum="-1" Maximum="1" Value="{Binding Level.BaseValue}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type sharpSynth:Delay}">
+			<StackPanel>
+				<TextBlock Text="Delay"/>
+				<UniformGrid Rows="2" Columns="2">
+					<TextBlock Text="Delay"/>
+					<TextBlock Text="Feedback"/>
+					<Slider Minimum="0" Maximum="2" Value="{Binding DelayAmount}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding FeedbackAmount.BaseValue}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
+	</Window.Resources>
 	<StackPanel>
-		<TextBlock>LFO Frequency</TextBlock>
-		<Slider Minimum="0.1" Maximum="10" Value="{Binding Frequency}" ></Slider>
+		<ItemsControl ItemsSource="{Binding ControllableComponents}"/>
+		<!--<TextBlock>LFO Frequency</TextBlock>
+		<Slider Minimum="0.1" Maximum="10" Value="{Binding Frequency}" ></Slider>-->
 		<!--<TextBlock>Pitch</TextBlock>
 		<Slider Minimum="-3" Maximum="3" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>-->
-		<TextBlock>Shape</TextBlock>
-		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>
+		<!--<TextBlock>Shape</TextBlock>
+		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>-->
 		<TextBlock>Trigger Length</TextBlock>
 		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
 		<TextBlock>Sequencer</TextBlock>

@@ -49,7 +49,7 @@ namespace SharpSynth
 			{
 				var newBuffer = new float[desiredBufferSize];
 				if (feedbackBuffer != null)
-					Array.Copy(feedbackBuffer, newBuffer, newBuffer.Length);
+					Array.Copy(feedbackBuffer, newBuffer, feedbackBuffer.Length);
 				feedbackBuffer = newBuffer;
 			}
 
