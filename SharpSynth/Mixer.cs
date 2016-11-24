@@ -5,11 +5,11 @@ namespace SharpSynth
 {
 	public class Mixer : SynthComponent
 	{
-		public List<SynthComponent> Inputs { get; }
+		public List<ISynthComponent> Inputs { get; }
 
 		public Mixer()
 		{
-			Inputs = new List<SynthComponent>();
+			Inputs = new List<ISynthComponent>();
 		}
 
 		#region Implementation of ISynthComponent

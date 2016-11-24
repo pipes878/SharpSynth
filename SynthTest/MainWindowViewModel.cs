@@ -12,7 +12,9 @@ namespace SynthTest
 	{
 		private float pitch;
 		private readonly Oscillator lfo = new Oscillator { Shape = OscillatorShape.Ramp };
-		private readonly Oscillator Osc1 = new Oscillator { Shape = OscillatorShape.Sin };
+
+		private readonly Vco1 vco1 = new Vco1();
+		private readonly Vco1 vco2 = new Vco1();
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
@@ -26,7 +28,7 @@ namespace SynthTest
 		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
 
-		public ObservableCollection<ISynthComponent> ControllableComponents { get; } = new ObservableCollection<ISynthComponent>();
+		public ObservableCollection<object> ControllableComponents { get; } = new ObservableCollection<object>();
 
 		public float Frequency
 		{
@@ -47,12 +49,6 @@ namespace SynthTest
 		//		Osc1.Frequency.BaseValue = 440f * pitch2;
 		//	}
 		//}
-
-		public int Shape
-		{
-			get { return (int)Osc1.Shape; }
-			set { Osc1.Shape = (OscillatorShape)value; }
-		}
 
 		public float TriggerLength
 		{
@@ -126,6 +122,8 @@ namespace SynthTest
 				return;
 
 			ControllableComponents.Add(lfo);
+			ControllableComponents.Add(vco1);
+			ControllableComponents.Add(vco2);
 			ControllableComponents.Add(delay);
 
 			waveOut = new WaveOut();
@@ -139,23 +137,19 @@ namespace SynthTest
 			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
 			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
-			Shape = 0;
 			//Pitch = 0;
 
 			var mixer = new Mixer();
-			//mixer.Inputs.Add(Osc1);
-			//mixer.Inputs.Add(cutoff);
-			//mixer.Inputs.Add(Osc1);
-			mixer.Inputs.Add(HighPassFilter);
-			mixer.Inputs.Add(LowPassFilter);
+			mixer.Inputs.Add(vco1.Output);
+			mixer.Inputs.Add(vco2.Output);
 
-			LowPassFilter.Input = Osc1;
-			HighPassFilter.Input = Osc1;
+			LowPassFilter.Input = mixer;
+			//HighPassFilter.Input = vco2.Output;
 			sequencer.TriggerSource.Control = trigger;
-			Osc1.Frequency.Control = new LinearFrequencyConverter(110) { Input = sequencer };
+			vco1.ControlInput = sequencer;
 
 			delay.Input = Amp;
-			Amp.Input = mixer;
+			Amp.Input = LowPassFilter;
 			Amp.Gain.Control = envelope;
 			Amp.Gain.BaseValue = 0f;
 			trigger.Input = lfo;

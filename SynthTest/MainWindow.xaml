@@ -44,6 +44,27 @@
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type synthTest:Vco1}">
+			<DataTemplate.Resources>
+				<ObjectDataProvider x:Key="shapeEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+					<ObjectDataProvider.MethodParameters>
+						<x:Type TypeName="sharpSynth:OscillatorShape"/>
+					</ObjectDataProvider.MethodParameters>
+				</ObjectDataProvider>
+			</DataTemplate.Resources>
+			<StackPanel>
+				<TextBlock Text="Oscillator"/>
+				<UniformGrid Rows="2" Columns="3">
+					<TextBlock Text="Shape"/>
+					<TextBlock Text="Octave"/>
+					<TextBlock Text="Detune"/>
+					<ComboBox ItemsSource="{Binding Source={StaticResource shapeEnum}}" SelectedValue="{Binding Path=Shape, Converter={StaticResource enumConverter}}"/>
+					<Slider Minimum="-4" Maximum="4" Value="{Binding Octave}"/>
+					<Slider Minimum="-2" Maximum="2" Value="{Binding Detune}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
 	</Window.Resources>
 	<StackPanel>
 		<ItemsControl ItemsSource="{Binding ControllableComponents}"/>
