@@ -13,8 +13,8 @@ namespace SynthTest
 		private float pitch;
 		private readonly Oscillator lfo = new Oscillator { Shape = OscillatorShape.Ramp };
 
-		private readonly Vco1 vco1 = new Vco1();
-		private readonly Vco1 vco2 = new Vco1();
+		private readonly Vco vco1 = new Vco();
+		private readonly Vco vco2 = new Vco();
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
@@ -138,6 +138,10 @@ namespace SynthTest
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
 			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
 			//Pitch = 0;
+
+			vco1.LfoInput = lfo;
+			vco1.XModInput = vco2.Output;
+			vco2.LfoInput = lfo;
 
 			var mixer = new Mixer();
 			mixer.Inputs.Add(vco1.Output);
