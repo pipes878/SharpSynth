@@ -154,9 +154,9 @@ namespace SynthTest
 
 			delay.Input = Amp;
 			Amp.Input = LowPassFilter;
-			Amp.Gain.Control = envelope;
-			Amp.Gain.BaseValue = 0f;
-			trigger.Input = lfo;
+			//Amp.Gain.Control = envelope;
+			Amp.Gain.BaseValue = .5f;
+			//trigger.Input = lfo;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
 
