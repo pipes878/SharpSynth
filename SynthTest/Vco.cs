@@ -11,7 +11,6 @@ namespace SynthTest
 		private ControlInput detune;
 		private ControlInput cvIn;
 		private ControlInput lfoMod;
-		private ControlInput crossMod;
 
 		private Mixer controlInputMix;
 		private LinearFrequencyConverter frequencyConverter;
@@ -61,14 +60,14 @@ namespace SynthTest
 
 		public ISynthComponent XModInput
 		{
-			get { return crossMod.Control; }
-			set { crossMod.Control = value; }
+			get { return detune.Control; }
+			set { detune.Control = value; }
 		}
 
 		public float XModLevel
 		{
-			get { return crossMod.Gain; }
-			set { crossMod.Gain = value; }
+			get { return detune.Gain; }
+			set { detune.Gain = value; }
 		}
 
 		#endregion
@@ -81,14 +80,12 @@ namespace SynthTest
 			detune = new ControlInput();
 			cvIn = new ControlInput();
 			lfoMod = new ControlInput { Gain = 0 };
-			crossMod = new ControlInput { Gain = 0 };
 
 			controlInputMix = new Mixer();
 			controlInputMix.Inputs.Add(octave);
 			controlInputMix.Inputs.Add(detune);
 			controlInputMix.Inputs.Add(cvIn);
 			controlInputMix.Inputs.Add(lfoMod);
-			controlInputMix.Inputs.Add(crossMod);
 
 			frequencyConverter = new LinearFrequencyConverter(440) { Input = controlInputMix };
 			oscillator = new Oscillator();
@@ -96,30 +93,5 @@ namespace SynthTest
 		}
 
 		#endregion
-	}
-
-	public class Lfo
-	{
-		private readonly Oscillator oscillator;
-
-		public float Frequency
-		{
-			get { return oscillator.Frequency.BaseValue; }
-			set { oscillator.Frequency.BaseValue = value; }
-		}
-
-		public OscillatorShape Shape
-		{
-			get { return oscillator.Shape; }
-			set { oscillator.Shape = value; }
-		}
-
-		public ISynthComponent Output => oscillator;
-
-
-		public Lfo()
-		{
-			oscillator = new Oscillator();
-		}
 	}
 }

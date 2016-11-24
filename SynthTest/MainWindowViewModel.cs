@@ -11,10 +11,11 @@ namespace SynthTest
 	public class MainWindowViewModel : IDisposable
 	{
 		private float pitch;
-		private readonly Oscillator lfo = new Oscillator { Shape = OscillatorShape.Ramp };
 
+		private readonly Lfo lfo = new Lfo();
 		private readonly Vco vco1 = new Vco();
 		private readonly Vco vco2 = new Vco();
+		private readonly PoliMixer mixer = new PoliMixer();
 
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
@@ -29,15 +30,6 @@ namespace SynthTest
 		private WaveOut waveOut;
 
 		public ObservableCollection<object> ControllableComponents { get; } = new ObservableCollection<object>();
-
-		public float Frequency
-		{
-			get { return lfo.Frequency.BaseValue; }
-			set
-			{
-				lfo.Frequency.BaseValue = value;
-			}
-		}
 
 		//public float Pitch
 		//{
@@ -124,30 +116,26 @@ namespace SynthTest
 			ControllableComponents.Add(lfo);
 			ControllableComponents.Add(vco1);
 			ControllableComponents.Add(vco2);
+			ControllableComponents.Add(mixer);
 			ControllableComponents.Add(delay);
 
 			waveOut = new WaveOut();
 			waveOut.DesiredLatency = 80;
 			waveOut.NumberOfBuffers = 4;
 
-			lfo.Frequency.BaseValue = 5f;
-			lfo.Scale.BaseValue = 1f;
-			lfo.Level.BaseValue = .5f;
-
 			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
 			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
 			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
 			//Pitch = 0;
 
-			vco1.LfoInput = lfo;
+			vco1.LfoInput = lfo.Output;
 			vco1.XModInput = vco2.Output;
-			vco2.LfoInput = lfo;
+			vco2.LfoInput = lfo.Output;
 
-			var mixer = new Mixer();
-			mixer.Inputs.Add(vco1.Output);
-			mixer.Inputs.Add(vco2.Output);
+			mixer.Osc1 = vco1.Output;
+			mixer.Osc2 = vco2.Output;
 
-			LowPassFilter.Input = mixer;
+			LowPassFilter.Input = mixer.Output;
 			//HighPassFilter.Input = vco2.Output;
 			sequencer.TriggerSource.Control = trigger;
 			vco1.ControlInput = sequencer;
@@ -168,7 +156,6 @@ namespace SynthTest
 			//cutoff.Input = Osc1;
 			//cutoff.CutoffThreshold.Control = envelope;
 
-			Frequency = 0;
 			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(delay)));
 			waveOut.Play();
 		}

@@ -54,7 +54,7 @@
 				</ObjectDataProvider>
 			</DataTemplate.Resources>
 			<StackPanel>
-				<TextBlock Text="Oscillator"/>
+				<TextBlock Text="VFO"/>
 				<UniformGrid Rows="2" Columns="5">
 					<TextBlock Text="Shape"/>
 					<TextBlock Text="Octave"/>
@@ -66,6 +66,36 @@
 					<Slider Minimum="-0.5" Maximum="0.5" Value="{Binding Detune}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding LfoLevel}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding XModLevel}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type synthTest:Lfo}">
+			<DataTemplate.Resources>
+				<ObjectDataProvider x:Key="shapeEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+					<ObjectDataProvider.MethodParameters>
+						<x:Type TypeName="sharpSynth:OscillatorShape"/>
+					</ObjectDataProvider.MethodParameters>
+				</ObjectDataProvider>
+			</DataTemplate.Resources>
+			<StackPanel>
+				<TextBlock Text="LFO"/>
+				<UniformGrid Rows="2" Columns="2">
+					<TextBlock Text="Frequency"/>
+					<TextBlock Text="Shape"/>
+					<Slider Minimum="0" Maximum="10" Value="{Binding Frequency}"/>
+					<ComboBox ItemsSource="{Binding Source={StaticResource shapeEnum}}" SelectedValue="{Binding Path=Shape, Converter={StaticResource enumConverter}}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type synthTest:PoliMixer}">
+			<StackPanel>
+				<TextBlock Text="PoliMixer"/>
+				<UniformGrid Rows="2" Columns="2">
+					<TextBlock Text="Osc1 Level"/>
+					<TextBlock Text="Osc2 Level"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Osc1Level}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Osc2Level}"/>
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>
