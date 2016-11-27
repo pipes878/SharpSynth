@@ -101,6 +101,40 @@
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type synthTest:Triggerizer}">
+			<CheckBox IsChecked="{Binding IsTriggered}" Content="Trigger"/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type synthTest:PoliFilter}">
+			<DataTemplate.Resources>
+				<ObjectDataProvider x:Key="filterType" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+					<ObjectDataProvider.MethodParameters>
+						<x:Type TypeName="sharpSynth:FilterType"/>
+					</ObjectDataProvider.MethodParameters>
+				</ObjectDataProvider>
+			</DataTemplate.Resources>
+			<StackPanel>
+				<TextBlock Text="Filter"/>
+				<UniformGrid Rows="4" Columns="4">
+					<TextBlock Text="Attack"/>
+					<TextBlock Text="Decay"/>
+					<TextBlock Text="Sustain"/>
+					<TextBlock Text="Release"/>
+					<Slider Minimum="0.01" Maximum="2" Value="{Binding Attack}"/>
+					<Slider Minimum="0.01" Maximum="2" Value="{Binding Decay}"/>
+					<Slider Minimum="0" Maximum="2" Value="{Binding Sustain}"/>
+					<Slider Minimum="0.01" Maximum="2" Value="{Binding Release}"/>
+					<TextBlock Text="Filter Type"/>
+					<TextBlock Text="LFO Level"/>
+					<TextBlock Text="ADSR Level"/>
+					<TextBlock Text="Cutoff"/>
+					<ComboBox ItemsSource="{Binding Source={StaticResource filterType}}" SelectedValue="{Binding Path=FilterType, Converter={StaticResource enumConverter}}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding LfoLevel}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding AdsrLevel}"/>
+					<Slider Minimum="-4" Maximum="4" Value="{Binding Cutoff}"/>
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
 	</Window.Resources>
 	<StackPanel>
 		<ItemsControl ItemsSource="{Binding ControllableComponents}"/>

@@ -62,6 +62,7 @@
     <Compile Include="Lfo.cs" />
     <Compile Include="PoliFilter.cs" />
     <Compile Include="PoliMixer.cs" />
+    <Compile Include="Triggerizer.cs" />
     <Compile Include="Vco.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -62,7 +62,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The input used to trigger the envelope.
 		/// </summary>
-		public SynthComponent Input { get; set; }
+		public ISynthComponent Input { get; set; }
 
 		/// <summary>
 		/// Generate synthesizer samples.
