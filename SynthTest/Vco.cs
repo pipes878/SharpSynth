@@ -70,6 +70,12 @@ namespace SynthTest
 			set { detune.Gain = value; }
 		}
 
+		public float SquarePwm
+		{
+			get { return oscillator.SquarePwm.BaseValue; }
+			set { oscillator.SquarePwm.BaseValue = value; }
+		}
+
 		#endregion
 
 		#region Construction
@@ -80,6 +86,7 @@ namespace SynthTest
 			detune = new ControlInput();
 			cvIn = new ControlInput();
 			lfoMod = new ControlInput { Gain = 0 };
+			XModLevel = 0;
 
 			controlInputMix = new Mixer();
 			controlInputMix.Inputs.Add(octave);

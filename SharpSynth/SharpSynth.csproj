@@ -59,6 +59,7 @@
     <Compile Include="StepSequencer.cs" />
     <Compile Include="SynthComponent.cs" />
     <Compile Include="SynthToSampleProvider.cs" />
+    <Compile Include="Tables.cs" />
     <Compile Include="TriggerGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

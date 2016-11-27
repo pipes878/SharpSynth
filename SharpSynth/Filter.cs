@@ -5,21 +5,34 @@ namespace SharpSynth
 	public enum FilterType
 	{
 		HighPass,
-		LowPass
+		LowPass,
+		BandPass,
+		Notch
 	}
 
 	public class Filter : SynthComponent
 	{
 		private const float Dt = 1f / 44100.0f;
 
+		private float damp;
+		private float lowPass;
+		private float bandPass;
+		private float highPass;
+		private float notch;
+
 		private float lastOutput;
 		private float lastInput;
 
 		public FilterType FilterType { get; set; }
 
-		public ControlInput CutoffFrequency { get; } = new ControlInput { BaseValue = 440 };
+		public ControlInput CornerFrequency { get; } = new ControlInput { BaseValue = 440 };
 
 		public ISynthComponent Input { get; set; }
+
+		public Filter(float q = 5)
+		{
+			damp = 1 / q;
+		}
 
 		#region Overrides of SynthComponent
 
@@ -41,34 +54,69 @@ namespace SharpSynth
 			}
 
 			var input = Input.GenerateSamples(count, timeBase);
-			var cutoff = CutoffFrequency.GenerateSamples(count, timeBase);
+			var cutoff = CornerFrequency.GenerateSamples(count, timeBase);
 
-			if (FilterType == FilterType.HighPass)
+			for (var i = 0; i < count; i++)
 			{
-				for (var i = 0; i < count; i++)
-				{
-					var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
-					var alpha = Dt / (rc + Dt);
+				var index = (int)((Tables.TableSize / 2f) * (cutoff[i] / 44100f));
+				if (index < 0)
+					index = 0;
+				else if (index > Tables.TableSize / 2)
+					index = Tables.TableSize / 2;
+				var fc = Tables.Sin[index];
 
-					// High pass filter.
-					lastOutput = alpha * (lastOutput + input[i] - lastInput);
-					buffer[i] = lastOutput;
-					lastInput = input[i];
+				lowPass = lowPass + fc * bandPass;
+				highPass = (input[i] - lowPass) - (damp * bandPass);
+				bandPass = fc * highPass + bandPass;
+				notch = highPass + lowPass;
+
+				switch (FilterType)
+				{
+					case FilterType.LowPass:
+						buffer[i] = lowPass;
+						break;
+					case FilterType.HighPass:
+						buffer[i] = highPass;
+						break;
+					case FilterType.BandPass:
+						buffer[i] = bandPass;
+						break;
+					case FilterType.Notch:
+						buffer[i] = notch;
+						break;
+
+					default:
+						buffer[i] = 0;
+						break;
 				}
 			}
-			else
-			{
-				for (var i = 0; i < count; i++)
-				{
-					var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
-					var alpha = Dt / (rc + Dt);
 
-					// Low pass filter.
-					lastOutput = lastOutput + alpha * (input[i] - lastOutput);
-					buffer[i] = lastOutput;
-					lastInput = input[i];
-				}
-			}
+			//if (FilterType == FilterType.HighPass)
+			//{
+			//	for (var i = 0; i < count; i++)
+			//	{
+			//		var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
+			//		var alpha = Dt / (rc + Dt);
+
+			//		// High pass filter.
+			//		lastOutput = alpha * (lastOutput + input[i] - lastInput);
+			//		buffer[i] = lastOutput;
+			//		lastInput = input[i];
+			//	}
+			//}
+			//else
+			//{
+			//	for (var i = 0; i < count; i++)
+			//	{
+			//		var rc = 1f / (float)(cutoff[i] * 2 * Math.PI);
+			//		var alpha = Dt / (rc + Dt);
+
+			//		// Low pass filter.
+			//		lastOutput = lastOutput + alpha * (input[i] - lastOutput);
+			//		buffer[i] = lastOutput;
+			//		lastInput = input[i];
+			//	}
+			//}
 		}
 
 		#endregion

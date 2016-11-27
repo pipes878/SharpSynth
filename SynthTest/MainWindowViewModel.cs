@@ -97,14 +97,14 @@ namespace SynthTest
 
 		public float LowPassCutoff
 		{
-			get { return LowPassFilter.CutoffFrequency.BaseValue; }
-			set { LowPassFilter.CutoffFrequency.BaseValue = value; }
+			get { return LowPassFilter.CornerFrequency.BaseValue; }
+			set { LowPassFilter.CornerFrequency.BaseValue = value; }
 		}
 
 		public float HighPassCutoff
 		{
-			get { return HighPassFilter.CutoffFrequency.BaseValue; }
-			set { HighPassFilter.CutoffFrequency.BaseValue = value; }
+			get { return HighPassFilter.CornerFrequency.BaseValue; }
+			set { HighPassFilter.CornerFrequency.BaseValue = value; }
 		}
 
 
@@ -113,20 +113,16 @@ namespace SynthTest
 			if (waveOut != null)
 				return;
 
-			ControllableComponents.Add(lfo);
-			ControllableComponents.Add(vco1);
-			ControllableComponents.Add(vco2);
-			ControllableComponents.Add(mixer);
-			ControllableComponents.Add(delay);
-
 			waveOut = new WaveOut();
 			waveOut.DesiredLatency = 80;
 			waveOut.NumberOfBuffers = 4;
 
-			//Osc1.Frequency.Control = new LinearFrequencyConverter(440) { Input = LFO };
-			//Osc2.Frequency.Control = new LinearFrequencyConverter(220) { Input = LFO };
-			//Osc3.Frequency.Control = new LinearFrequencyConverter(110) { Input = LFO };
-			//Pitch = 0;
+			ControllableComponents.Add(lfo);
+			ControllableComponents.Add(vco1);
+			ControllableComponents.Add(vco2);
+			ControllableComponents.Add(mixer);
+
+			ControllableComponents.Add(delay);
 
 			vco1.LfoInput = lfo.Output;
 			vco1.XModInput = vco2.Output;
