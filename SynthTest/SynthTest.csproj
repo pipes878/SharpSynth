@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Lfo.cs" />
+    <Compile Include="PoliAmp.cs" />
     <Compile Include="PoliFilter.cs" />
     <Compile Include="PoliMixer.cs" />
     <Compile Include="Triggerizer.cs" />

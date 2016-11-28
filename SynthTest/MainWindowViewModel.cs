@@ -17,6 +17,7 @@ namespace SynthTest
 		private readonly Vco vco2 = new Vco();
 		private readonly PoliMixer mixer = new PoliMixer();
 		private readonly PoliFilter filter = new PoliFilter();
+		private readonly PoliAmp amp = new PoliAmp();
 
 		private readonly Triggerizer triggerizer = new Triggerizer();
 
@@ -126,7 +127,7 @@ namespace SynthTest
 			ControllableComponents.Add(mixer);
 			ControllableComponents.Add(triggerizer);
 			ControllableComponents.Add(filter);
-
+			ControllableComponents.Add(amp);
 
 			ControllableComponents.Add(delay);
 
@@ -141,15 +142,16 @@ namespace SynthTest
 			filter.TriggerInput = triggerizer;
 			filter.LfoInput = lfo.Output;
 
+			amp.LfoInput = lfo.Output;
+			amp.TriggerInput = triggerizer;
+			amp.Input = filter.Output;
+
 			//LowPassFilter.Input = mixer.Output;
 			//HighPassFilter.Input = vco2.Output;
 			sequencer.TriggerSource.Control = trigger;
 			vco1.ControlInput = sequencer;
 
-			delay.Input = Amp;
-			Amp.Input = filter.Output;
-			//Amp.Gain.Control = envelope;
-			Amp.Gain.BaseValue = .5f;
+			delay.Input = amp.Output;
 			//trigger.Input = lfo;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;

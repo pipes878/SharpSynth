@@ -20,7 +20,7 @@ namespace SharpSynth
 		/// <summary>
 		/// 
 		/// </summary>
-		public SynthComponent Input { get; set; }
+		public ISynthComponent Input { get; set; }
 
 		#region Overrides of SynthComponent
 

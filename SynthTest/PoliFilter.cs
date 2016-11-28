@@ -4,8 +4,6 @@ namespace SynthTest
 {
 	public class PoliFilter
 	{
-		private ControlInput input;
-
 		private ControlInput lfoInput;
 		private ControlInput triggerInput;
 		private ControlInput envelopeOutput;
@@ -16,8 +14,8 @@ namespace SynthTest
 
 		public ISynthComponent Input
 		{
-			get { return input.Control; }
-			set { input.Control = value; }
+			get { return filter.Input; }
+			set { filter.Input = value; }
 		}
 
 		public ISynthComponent TriggerInput
@@ -83,7 +81,6 @@ namespace SynthTest
 
 		public PoliFilter()
 		{
-			input = new ControlInput();
 			triggerInput = new ControlInput();
 
 			lfoInput = new ControlInput();
@@ -98,7 +95,6 @@ namespace SynthTest
 			mixer.Inputs.Add(filterControlInput);
 
 			filter = new Filter();
-			filter.Input = input;
 			// Don't know about this.
 			filter.CornerFrequency.Control = new LinearFrequencyConverter(440) { Input = mixer };
 		}
