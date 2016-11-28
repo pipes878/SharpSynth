@@ -21,16 +21,13 @@ namespace SynthTest
 
 		private readonly Triggerizer triggerizer = new Triggerizer();
 
+		private readonly Oscillator oscillator = new Oscillator();
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
-		private readonly EnvelopeGenerator envelope = new EnvelopeGenerator();
-		private readonly Amplifier Amp = new Amplifier();
-		private readonly Filter LowPassFilter = new Filter { FilterType = FilterType.LowPass };
-		private readonly Filter HighPassFilter = new Filter { FilterType = FilterType.HighPass };
+
 		private readonly StepSequencer sequencer = new StepSequencer(4);
 
 		private readonly Delay delay = new Delay();
 
-		private readonly Cutoff cutoff = new Cutoff();
 		private WaveOut waveOut;
 
 		public ObservableCollection<object> ControllableComponents { get; } = new ObservableCollection<object>();
@@ -76,42 +73,6 @@ namespace SynthTest
 			set { sequencer.ControlValues[3].BaseValue = value; }
 		}
 
-		public float Attack
-		{
-			get { return envelope.Attack.BaseValue; }
-			set { envelope.Attack.BaseValue = value; }
-		}
-
-		public float Decay
-		{
-			get { return envelope.Decay.BaseValue; }
-			set { envelope.Decay.BaseValue = value; }
-		}
-
-		public float Sustain
-		{
-			get { return envelope.Sustain.BaseValue; }
-			set { envelope.Sustain.BaseValue = value; }
-		}
-		public float Release
-		{
-			get { return envelope.Release.BaseValue; }
-			set { envelope.Release.BaseValue = value; }
-		}
-
-		public float LowPassCutoff
-		{
-			get { return LowPassFilter.CornerFrequency.BaseValue; }
-			set { LowPassFilter.CornerFrequency.BaseValue = value; }
-		}
-
-		public float HighPassCutoff
-		{
-			get { return HighPassFilter.CornerFrequency.BaseValue; }
-			set { HighPassFilter.CornerFrequency.BaseValue = value; }
-		}
-
-
 		public void Play()
 		{
 			if (waveOut != null)
@@ -130,6 +91,7 @@ namespace SynthTest
 			ControllableComponents.Add(amp);
 
 			ControllableComponents.Add(delay);
+			ControllableComponents.Add(oscillator);
 
 			vco1.LfoInput = lfo.Output;
 			vco1.XModInput = vco2.Output;
@@ -139,27 +101,23 @@ namespace SynthTest
 			mixer.Osc2 = vco2.Output;
 
 			filter.Input = mixer.Output;
-			filter.TriggerInput = triggerizer;
+			filter.TriggerInput = trigger;
 			filter.LfoInput = lfo.Output;
 
 			amp.LfoInput = lfo.Output;
-			amp.TriggerInput = triggerizer;
+			amp.TriggerInput = trigger;
 			amp.Input = filter.Output;
 
-			//LowPassFilter.Input = mixer.Output;
-			//HighPassFilter.Input = vco2.Output;
 			sequencer.TriggerSource.Control = trigger;
+
 			vco1.ControlInput = sequencer;
+			vco2.ControlInput = sequencer;
 
 			delay.Input = amp.Output;
-			//trigger.Input = lfo;
+			trigger.Input = oscillator;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
-
-			envelope.Input = trigger;
-			envelope.Attack.BaseValue = 0.03f;
-			envelope.Decay.BaseValue = .3f;
-			envelope.Sustain.BaseValue = .1f;
+			oscillator.Level.BaseValue = 1;
 
 			//cutoff.Input = Osc1;
 			//cutoff.CutoffThreshold.Control = envelope;

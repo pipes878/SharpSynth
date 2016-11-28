@@ -14,25 +14,18 @@ namespace SharpSynth
 	{
 		private const float Dt = 1f / 44100.0f;
 
-		private float damp;
 		private float lowPass;
 		private float bandPass;
 		private float highPass;
 		private float notch;
 
-		private float lastOutput;
-		private float lastInput;
-
 		public FilterType FilterType { get; set; }
 
 		public ControlInput CornerFrequency { get; } = new ControlInput { BaseValue = 440 };
 
-		public ISynthComponent Input { get; set; }
+		public ControlInput Q { get; } = new ControlInput { BaseValue = 5 };
 
-		public Filter(float q = 5)
-		{
-			damp = 1 / q;
-		}
+		public ISynthComponent Input { get; set; }
 
 		#region Overrides of SynthComponent
 
@@ -49,12 +42,12 @@ namespace SharpSynth
 				for (var i = 0; i < count; i++)
 					buffer[i++] = 0;
 
-				lastOutput = 0;
 				return;
 			}
 
 			var input = Input.GenerateSamples(count, timeBase);
 			var cutoff = CornerFrequency.GenerateSamples(count, timeBase);
+			var q = Q.GenerateSamples(count, timeBase);
 
 			for (var i = 0; i < count; i++)
 			{
@@ -66,7 +59,7 @@ namespace SharpSynth
 				var fc = Tables.Sin[index];
 
 				lowPass = lowPass + fc * bandPass;
-				highPass = (input[i] - lowPass) - (damp * bandPass);
+				highPass = (input[i] - lowPass) - ((1 / q[i]) * bandPass);
 				bandPass = fc * highPass + bandPass;
 				notch = highPass + lowPass;
 

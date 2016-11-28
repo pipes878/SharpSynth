@@ -71,6 +71,12 @@ namespace SynthTest
 			set { envelope.Release.BaseValue = value; }
 		}
 
+		public float Resonance
+		{
+			get { return filter.Q.BaseValue; }
+			set { filter.Q.BaseValue = value; }
+		}
+
 		public FilterType FilterType
 		{
 			get { return filter.FilterType; }
