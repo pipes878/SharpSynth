@@ -162,7 +162,7 @@
 	<StackPanel>
 		<ItemsControl ItemsSource="{Binding ControllableComponents}"/>
 		<TextBlock>Trigger Length</TextBlock>
-		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
+		<Slider Minimum="0" Maximum="5" Value="{Binding TriggerLength}"></Slider>
 		<TextBlock>Sequencer</TextBlock>
 		<UniformGrid Rows="1" Columns="8">
 			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer0}"></Slider>
