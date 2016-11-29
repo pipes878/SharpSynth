@@ -12,7 +12,7 @@ namespace SynthTest
 	{
 		private float pitch;
 
-		private readonly Lfo lfo = new Lfo();
+		private readonly PoliLfo lfo = new PoliLfo();
 		private readonly Vco vco1 = new Vco();
 		private readonly Vco vco2 = new Vco();
 		private readonly PoliMixer mixer = new PoliMixer();
@@ -24,7 +24,7 @@ namespace SynthTest
 		private readonly Oscillator oscillator = new Oscillator();
 		private readonly TriggerGenerator trigger = new TriggerGenerator();
 
-		private readonly StepSequencer sequencer = new StepSequencer(4);
+		private readonly StepSequencer sequencer = new StepSequencer(8);
 
 		private readonly Delay delay = new Delay();
 
@@ -32,45 +32,72 @@ namespace SynthTest
 
 		public ObservableCollection<object> ControllableComponents { get; } = new ObservableCollection<object>();
 
-		//public float Pitch
-		//{
-		//	get { return pitch; }
-		//	set
-		//	{
-		//		pitch = value;
-		//		var pitch2 = (float)Math.Pow(2, pitch);
-		//		Osc1.Frequency.BaseValue = 440f * pitch2;
-		//	}
-		//}
-
 		public float TriggerLength
 		{
 			get { return trigger.TriggerLength.BaseValue; }
 			set { trigger.TriggerLength.BaseValue = value; }
 		}
 
-		public float Sequencer0
+		private float[] scale = { 0, 2 / 12f, 4 / 12f, 5 / 12f, 7 / 12f, 9 / 12f, 11 / 12f };
+		private int[] seq = new int[8];
+
+
+		private void SetSequencer(int index, int value)
 		{
-			get { return sequencer.ControlValues[0].BaseValue; }
-			set { sequencer.ControlValues[0].BaseValue = value; }
+			seq[index] = value;
+			var neg = value < 0;
+			var diff = Math.Abs(value);
+			var oct = diff / 7;
+			var note = diff % 7;
+			sequencer.ControlValues[index].BaseValue = neg ? -(oct + scale[note]) : oct + scale[note];
 		}
 
-		public float Sequencer1
+		public int Sequencer0
 		{
-			get { return sequencer.ControlValues[1].BaseValue; }
-			set { sequencer.ControlValues[1].BaseValue = value; }
+			get { return seq[0]; }
+			set { SetSequencer(0, value); }
 		}
 
-		public float Sequencer2
+		public int Sequencer1
 		{
-			get { return sequencer.ControlValues[2].BaseValue; }
-			set { sequencer.ControlValues[2].BaseValue = value; }
+			get { return seq[1]; }
+			set { SetSequencer(1, value); }
 		}
 
-		public float Sequencer3
+		public int Sequencer2
 		{
-			get { return sequencer.ControlValues[3].BaseValue; }
-			set { sequencer.ControlValues[3].BaseValue = value; }
+			get { return seq[2]; }
+			set { SetSequencer(2, value); }
+		}
+
+		public int Sequencer3
+		{
+			get { return seq[3]; }
+			set { SetSequencer(3, value); }
+		}
+
+		public int Sequencer4
+		{
+			get { return seq[4]; }
+			set { SetSequencer(4, value); }
+		}
+
+		public int Sequencer5
+		{
+			get { return seq[5]; }
+			set { SetSequencer(5, value); }
+		}
+
+		public int Sequencer6
+		{
+			get { return seq[6]; }
+			set { SetSequencer(6, value); }
+		}
+
+		public int Sequencer7
+		{
+			get { return seq[7]; }
+			set { SetSequencer(7, value); }
 		}
 
 		public void Play()

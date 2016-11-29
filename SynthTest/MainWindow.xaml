@@ -71,7 +71,7 @@
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type synthTest:Lfo}">
+		<DataTemplate DataType="{x:Type synthTest:PoliLfo}">
 			<DataTemplate.Resources>
 				<ObjectDataProvider x:Key="shapeEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -161,31 +161,18 @@
 	</Window.Resources>
 	<StackPanel>
 		<ItemsControl ItemsSource="{Binding ControllableComponents}"/>
-		<!--<TextBlock>LFO Frequency</TextBlock>
-		<Slider Minimum="0.1" Maximum="10" Value="{Binding Frequency}" ></Slider>-->
-		<!--<TextBlock>Pitch</TextBlock>
-		<Slider Minimum="-3" Maximum="3" Value="{Binding Pitch}" TickFrequency="-1" SmallChange="0.08333333333333"></Slider>-->
-		<!--<TextBlock>Shape</TextBlock>
-		<Slider Minimum="0" Maximum="4" Value="{Binding Shape}" SmallChange="1"></Slider>-->
 		<TextBlock>Trigger Length</TextBlock>
 		<Slider Minimum="0" Maximum="1" Value="{Binding TriggerLength}"></Slider>
 		<TextBlock>Sequencer</TextBlock>
-		<UniformGrid Rows="1" Columns="4">
-			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer0}"></Slider>
-			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer1}"></Slider>
-			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer2}"></Slider>
-			<Slider Minimum="-1" Maximum="1" Value="{Binding Sequencer3}"></Slider>
+		<UniformGrid Rows="1" Columns="8">
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer0}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer1}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer2}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer3}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer4}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer5}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer6}"></Slider>
+			<Slider Minimum="-8" Maximum="8" Value="{Binding Sequencer7}"></Slider>
 		</UniformGrid>
-		<TextBlock>Envelope (ADSR)</TextBlock>
-		<UniformGrid Rows="1" Columns="4">
-			<Slider Minimum="0" Maximum="2" Value="{Binding Attack}"></Slider>
-			<Slider Minimum="0" Maximum="2" Value="{Binding Decay}"></Slider>
-			<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"></Slider>
-			<Slider Minimum="0" Maximum="5" Value="{Binding Release}"></Slider>
-		</UniformGrid>
-		<TextBlock>Low Pass</TextBlock>
-		<Slider Minimum="10" Maximum="10000" Value="{Binding LowPassCutoff}"></Slider>
-		<TextBlock>High Pass</TextBlock>
-		<Slider Minimum="10" Maximum="10000" Value="{Binding HighPassCutoff}"></Slider>
 	</StackPanel>
 </Window>

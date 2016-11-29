@@ -2,7 +2,7 @@ using SharpSynth;
 
 namespace SynthTest
 {
-	public class Lfo
+	public class PoliLfo
 	{
 		private readonly Oscillator oscillator;
 
@@ -20,7 +20,7 @@ namespace SynthTest
 
 		public ISynthComponent Output => oscillator;
 
-		public Lfo()
+		public PoliLfo()
 		{
 			oscillator = new Oscillator();
 		}
