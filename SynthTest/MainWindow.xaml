@@ -93,11 +93,13 @@
 		<DataTemplate DataType="{x:Type synthTest:PoliMixer}">
 			<StackPanel>
 				<TextBlock Text="PoliMixer"/>
-				<UniformGrid Rows="2" Columns="2">
+				<UniformGrid Rows="2" Columns="3">
 					<TextBlock Text="Osc1 Level"/>
 					<TextBlock Text="Osc2 Level"/>
+					<TextBlock Text="Noise Level"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding Osc1Level}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding Osc2Level}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding NoiseLevel}"/>
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>

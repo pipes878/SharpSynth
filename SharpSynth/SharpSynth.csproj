@@ -54,6 +54,7 @@
     <Compile Include="ISynthComponent.cs" />
     <Compile Include="LinearFrequencyConverter.cs" />
     <Compile Include="Mixer.cs" />
+    <Compile Include="Noise.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepSequencer.cs" />

@@ -4,6 +4,7 @@ namespace SynthTest
 {
 	public class PoliMixer
 	{
+		private ControlInput noise;
 		private readonly Mixer mixer;
 		private readonly ControlInput[] controls;
 
@@ -33,13 +34,21 @@ namespace SynthTest
 			set { controls[1].Gain = value; }
 		}
 
+		public float NoiseLevel
+		{
+			get { return noise.Gain; }
+			set { noise.Gain = value; }
+		}
+
 		public PoliMixer()
 		{
+			noise = new ControlInput { Control = new Noise(), Gain = 0 };
 			mixer = new Mixer();
 			controls = new ControlInput[2];
 			for (var i = 0; i < 2; i++)
-				controls[i] = new ControlInput();
+				controls[i] = new ControlInput { Gain = .5f };
 			mixer.Inputs.AddRange(controls);
+			mixer.Inputs.Add(noise);
 		}
 	}
 }
