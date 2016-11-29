@@ -44,21 +44,6 @@ namespace SharpSynth
 		public ControlInput Frequency { get; } = new ControlInput { BaseValue = 0 };
 
 		/// <summary>
-		/// The signal will oscillate evenly around this point. Default is 0.
-		/// </summary>
-		public ControlInput Level { get; } = new ControlInput { BaseValue = 0 };
-
-		/// <summary>
-		/// Scale value of the oscillator will multiply the output value after <see cref="Level"/> is applied. Default is 1.
-		/// </summary>
-		public ControlInput Scale { get; } = new ControlInput { BaseValue = 1 };
-
-		/// <summary>
-		/// The phase offset of the waveform. A value of 1.0 is a full phase, 0.5 is half phase.
-		/// </summary>
-		public ControlInput PhaseOffset { get; } = new ControlInput { BaseValue = 0 };
-
-		/// <summary>
 		/// PWM control for the square wave.
 		/// </summary>
 		public ControlInput SquarePwm { get; } = new ControlInput { BaseValue = 0.5f };
@@ -84,16 +69,13 @@ namespace SharpSynth
 			}
 
 			var frequency = Frequency.GenerateSamples(count, timeBase);
-			var level = Level.GenerateSamples(count, timeBase);
-			var scale = Scale.GenerateSamples(count, timeBase);
-			var phaseOffset = PhaseOffset.GenerateSamples(count, timeBase);
 
 			if (Shape == OscillatorShape.Square)
 			{
 				var pwm = SquarePwm.GenerateSamples(count, timeBase);
 				for (var i = 0; i < count; i++)
 				{
-					var a = (int)(phaseOffset[i] * Tables.TableSize + angle) & Tables.TableMask;
+					var a = (int)(Tables.TableSize + angle) & Tables.TableMask;
 					var pw = pwm[i] * Tables.TableSize;
 					buffer[i] = a < pw ? 1 : 0;
 
@@ -106,7 +88,7 @@ namespace SharpSynth
 			{
 				for (var i = 0; i < count; i++)
 				{
-					buffer[i] = level[i] + table[(int)(phaseOffset[i] * Tables.TableSize + angle) & Tables.TableMask] * scale[i];
+					buffer[i] = table[(int)(Tables.TableSize + angle) & Tables.TableMask];
 					angle += frequency[i] * AngleInc;
 					if (angle > Tables.TableSize)
 						angle -= Tables.TableSize;

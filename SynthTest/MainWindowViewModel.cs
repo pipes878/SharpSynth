@@ -117,7 +117,6 @@ namespace SynthTest
 			trigger.Input = oscillator;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
-			oscillator.Level.BaseValue = 1;
 
 			//cutoff.Input = Osc1;
 			//cutoff.CutoffThreshold.Control = envelope;
