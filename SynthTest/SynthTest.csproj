@@ -59,6 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BassStation2.cs" />
+    <Compile Include="MidiDeviceInput.cs" />
     <Compile Include="PoliLfo.cs" />
     <Compile Include="PoliAmp.cs" />
     <Compile Include="PoliFilter.cs" />

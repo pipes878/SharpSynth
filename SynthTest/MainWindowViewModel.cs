@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
+using NAudio.Midi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using SharpSynth;
@@ -27,6 +28,8 @@ namespace SynthTest
 		private readonly StepSequencer sequencer = new StepSequencer(8);
 
 		private readonly Delay delay = new Delay();
+
+		private MidiDeviceInput midi;
 
 		private WaveOut waveOut;
 
@@ -127,20 +130,23 @@ namespace SynthTest
 			mixer.Osc1 = vco1.Output;
 			mixer.Osc2 = vco2.Output;
 
+			midi = new MidiDeviceInput();
+
 			filter.Input = mixer.Output;
-			filter.TriggerInput = trigger;
+			filter.TriggerInput = midi.GateOutput;
 			filter.LfoInput = lfo.Output;
 
 			amp.LfoInput = lfo.Output;
-			amp.TriggerInput = trigger;
+			amp.TriggerInput = midi.GateOutput;
 			amp.Input = filter.Output;
 
 			sequencer.TriggerSource.Control = trigger;
 
-			vco1.ControlInput = sequencer;
-			vco2.ControlInput = sequencer;
+			vco1.ControlInput = midi.ControlOutput;
+			vco2.ControlInput = midi.ControlOutput;
 
 			delay.Input = amp.Output;
+
 			trigger.Input = oscillator;
 			trigger.TriggerThreshold.BaseValue = 1;
 			trigger.TriggerLength.BaseValue = .5f;
