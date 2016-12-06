@@ -131,7 +131,6 @@ namespace SynthTest
 			mixer.Osc2 = vco2.Output;
 
 			midi = new MidiDeviceInput();
-
 			filter.Input = mixer.Output;
 			filter.TriggerInput = midi.GateOutput;
 			filter.LfoInput = lfo.Output;
@@ -156,6 +155,132 @@ namespace SynthTest
 
 			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(delay)));
 			waveOut.Play();
+
+			midi.ControlEvent += MidiOnControlEvent;
+		}
+
+		enum BankSelect
+		{
+			Adsr,
+			Misc
+		}
+		BankSelect bank = BankSelect.Adsr;
+
+		private void MidiOnControlEvent(int i, float f)
+		{
+			bool handled = false;
+			switch (bank)
+			{
+				case BankSelect.Adsr:
+					handled = AdsrMidiControl(i, f);
+					break;
+
+				case BankSelect.Misc:
+					handled = MiscMidiControl(i, f);
+					break;
+			}
+
+			if (!handled)
+			switch (i)
+			{
+				case 97:
+					bank = BankSelect.Adsr;
+					break;
+
+				case 96:
+					bank = BankSelect.Misc;
+					break;
+
+				case 7:
+					amp.Gain = f;
+					break;
+			}
+		}
+
+		private bool AdsrMidiControl(int i, float f)
+		{
+			switch (i)
+			{
+				case 91:
+					filter.Attack = f * 5 + 0.01f;
+					break;
+
+				case 93:
+					filter.Decay = f * 3;
+					break;
+
+				case 74:
+					filter.Sustain = f * 2;
+					break;
+
+				case 71:
+					filter.Release = f * 3;
+					break;
+
+				case 73:
+					amp.Attack = f * 5 + 0.01f;
+					break;
+
+				case 75:
+					amp.Decay = f * 3;
+					break;
+
+				case 72:
+					amp.Sustain = f * 2;
+					break;
+
+				case 10:
+					amp.Release = f * 3;
+					break;
+
+				default:
+					return false;
+			}
+
+			return true;
+		}
+
+		private bool MiscMidiControl(int i, float f)
+		{
+			switch (i)
+			{
+				case 91:
+					mixer.Osc1Level = f;
+					break;
+
+				case 93:
+					mixer.Osc2Level = f;
+					break;
+
+				case 74:
+					mixer.NoiseLevel = f;
+					break;
+
+				case 71:
+					lfo.Frequency = f * 20;
+					break;
+
+				case 73:
+					filter.LfoLevel = f * 5;
+					break;
+
+				case 75:
+					filter.AdsrLevel = f * 5;
+					break;
+
+				case 72:
+					filter.Cutoff = f * 8 - 4;
+					break;
+
+				case 10:
+					filter.Resonance = f * 20 + 1;
+					break;
+
+				default:
+					return false;
+			}
+
+			return true;
 		}
 
 		public void Dispose()

@@ -64,7 +64,7 @@
 					<TextBlock Text="Square PWM"/>
 					<ComboBox ItemsSource="{Binding Source={StaticResource shapeEnum}}" SelectedValue="{Binding Path=Shape, Converter={StaticResource enumConverter}}"/>
 					<Slider Minimum="-4" Maximum="4" Value="{Binding Octave}"/>
-					<Slider Minimum="-0.5" Maximum="0.5" Value="{Binding Detune}"/>
+					<Slider Minimum="-0.04" Maximum="0.04" Value="{Binding Detune}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding LfoLevel}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding XModLevel}"/>
 					<Slider Minimum="0" Maximum="1" Value="{Binding SquarePwm}"/>

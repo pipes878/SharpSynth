@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using NAudio.Midi;
 using SharpSynth;
 
@@ -7,10 +10,12 @@ namespace SynthTest
 	public class MidiDeviceInput
 	{
 		private MidiIn midi;
-		private int? pressedNode;
+		private List<int> pressedNotes = new List<int>();
 
 		public ISynthComponent GateOutput { get; }
 		public ISynthComponent ControlOutput { get; }
+
+		public event Action<int, float> ControlEvent;
 
 		public MidiDeviceInput()
 		{
@@ -32,28 +37,31 @@ namespace SynthTest
 			switch (e.MidiEvent.CommandCode)
 			{
 				case MidiCommandCode.NoteOn:
-					var noteOn = e.MidiEvent as NoteOnEvent;
-					if (pressedNode == null)
-					{
-						pressedNode = noteOn.NoteNumber;
-						((ControlInput)ControlOutput).BaseValue = (pressedNode.Value - 50) / 12f;
-						((ControlInput)GateOutput).BaseValue = 1f;
-						//pressedNode 
-					}
+					var noteOn = (NoteOnEvent)e.MidiEvent;
+					if (!pressedNotes.Contains(noteOn.NoteNumber))
+						pressedNotes.Add(noteOn.NoteNumber);
+
 					break;
 				case MidiCommandCode.NoteOff:
-					var note = e.MidiEvent as NoteEvent;
-					if (pressedNode == note.NoteNumber)
-					{
-						pressedNode = null;
-						((ControlInput)GateOutput).BaseValue = 0f;
-						//pressedNode 
-					}
+					var note = (NoteEvent)e.MidiEvent;
+					pressedNotes.RemoveAll(i => i == note.NoteNumber);
+					break;
+
+				case MidiCommandCode.ControlChange:
+					var cc = (ControlChangeEvent)e.MidiEvent;
+					ControlEvent?.Invoke((int)cc.Controller, cc.ControllerValue / 127f);
 					break;
 			}
-			//if (e.)
-			//Debug.WriteLine("Note {0}: {1}");
 
+			if (pressedNotes.Any())
+			{
+				((ControlInput)ControlOutput).BaseValue = ((float)pressedNotes.Average() - 57) / 12f;
+				((ControlInput)GateOutput).BaseValue = 1;
+			}
+			else
+			{
+				((ControlInput)GateOutput).BaseValue = 0;
+			}
 		}
 	}
 }

@@ -61,6 +61,12 @@ namespace SynthTest
 
 		public ISynthComponent Output => finalAmp;
 
+		public float Gain
+		{
+			get { return finalAmp.Gain.Gain; }
+			set { finalAmp.Gain.Gain = value; }
+		}
+
 		public PoliAmp()
 		{
 			lfoAmp = new Amplifier();
