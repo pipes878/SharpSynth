@@ -1,12 +1,13 @@
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
 	public class PoliMixer
 	{
-		private ControlInput noise;
+		private ControlValue noise;
 		private readonly Mixer mixer;
-		private readonly ControlInput[] controls;
+		private readonly ControlValue[] controls;
 
 		public ISynthComponent Osc1
 		{
@@ -42,11 +43,11 @@ namespace SynthTest
 
 		public PoliMixer()
 		{
-			noise = new ControlInput { Control = new Noise(), Gain = 0 };
+			noise = new ControlValue { Control = new Noise(), Gain = 0 };
 			mixer = new Mixer();
-			controls = new ControlInput[2];
+			controls = new ControlValue[2];
 			for (var i = 0; i < 2; i++)
-				controls[i] = new ControlInput { Gain = .5f };
+				controls[i] = new ControlValue { Gain = .5f };
 			mixer.Inputs.AddRange(controls);
 			mixer.Inputs.Add(noise);
 		}

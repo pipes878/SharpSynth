@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -15,7 +16,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The feedback amount.
 		/// </summary>
-		public ControlInput FeedbackAmount { get; } = new ControlInput { BaseValue = .5f };
+		public ControlValue FeedbackAmount { get; } = new ControlValue { BaseValue = .5f };
 
 		/// <summary>
 		/// 

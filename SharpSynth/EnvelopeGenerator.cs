@@ -1,5 +1,6 @@
 using System;
 using System.Net.Mail;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -32,7 +33,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The threshold that must be crossed for the envelope to activate.
 		/// </summary>
-		public ControlInput TriggerThreshold { get; } = new ControlInput { BaseValue = 0.5f };
+		public ControlValue TriggerThreshold { get; } = new ControlValue { BaseValue = 0.5f };
 
 		/// <summary>
 		/// Should the trigger detect rising or falling edges on the input signal?
@@ -42,22 +43,22 @@ namespace SharpSynth
 		/// <summary>
 		/// The time the envelope will take to go from 0 to 1 in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlInput Attack { get; } = new ControlInput { BaseValue = .05f };
+		public ControlValue Attack { get; } = new ControlValue { BaseValue = .05f };
 
 		/// <summary>
 		/// The time the envelope will take to go from 1 to sustain level in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlInput Decay { get; } = new ControlInput { BaseValue = .1f };
+		public ControlValue Decay { get; } = new ControlValue { BaseValue = .1f };
 
 		/// <summary>
 		/// The level that the envelope will sustain at. Note that this value can be above 1 to have a sustain value above attack.
 		/// </summary>
-		public ControlInput Sustain { get; } = new ControlInput { BaseValue = .5f };
+		public ControlValue Sustain { get; } = new ControlValue { BaseValue = .5f };
 
 		/// <summary>
 		/// The time that the envelopw will take to release. Note that the rate of release is determined by the distance from sustain to 0.
 		/// </summary>
-		public ControlInput Release { get; } = new ControlInput { BaseValue = .3f };
+		public ControlValue Release { get; } = new ControlValue { BaseValue = .3f };
 
 		/// <summary>
 		/// The input used to trigger the envelope.

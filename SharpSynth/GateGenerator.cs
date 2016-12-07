@@ -1,11 +1,13 @@
-﻿namespace SharpSynth
+﻿using SharpSynth.Input;
+
+namespace SharpSynth
 {
 	/// <summary>
 	/// Generates a gate value that is 0 when closed and 1 when open.
 	/// </summary>
 	public class GateGenerator : SynthComponent
 	{
-		public ControlInput TriggerThreshold { get; } = new ControlInput();
+		public ControlValue TriggerThreshold { get; } = new ControlValue();
 
 		/// <summary>
 		/// Is the generator inverted (trigger below the threshold) or normal (trigger above the threshold).

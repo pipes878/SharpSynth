@@ -1,14 +1,20 @@
-﻿namespace SharpSynth
+﻿namespace SharpSynth.Input
 {
 	/// <summary>
-	/// 
+	/// Generates a controllable value with a configurable base. The value produced is <see cref="BaseValue"/> + <see cref="Gain"/> * <see cref="Control"/>.
 	/// </summary>
-	public class ControlInput : ISynthComponent
+	public class ControlValue : ISynthComponent
 	{
+		#region Fields
+
 		private long generatedTimeBase;
 		private float[] generatedBuffer;
 		private int generatedCount;
 		private float? generatedBaseValue;
+
+		#endregion
+
+		#region Properties
 
 		/// <summary>
 		/// Added to the input after gain is applied. If there is no control input, this is the output produced.
@@ -24,6 +30,10 @@
 		/// The control input data. This is optional, and if not set, the value used will be <see cref="BaseValue"/>
 		/// </summary>
 		public ISynthComponent Control { get; set; }
+
+		#endregion
+
+		#region ISynthComponent Members
 
 		/// <summary>
 		/// Generate samples from the synth component.
@@ -65,5 +75,7 @@
 
 			return generatedBuffer;
 		}
+
+		#endregion
 	}
 }

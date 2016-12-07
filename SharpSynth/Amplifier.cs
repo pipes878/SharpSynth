@@ -1,11 +1,13 @@
-﻿namespace SharpSynth
+﻿using SharpSynth.Input;
+
+namespace SharpSynth
 {
 	public class Amplifier : SynthComponent
 	{
 		/// <summary>
 		/// The gain of the amplifier. If this value is a fraction then the amp will be an attenuator.
 		/// </summary>
-		public ControlInput Gain { get; } = new ControlInput { BaseValue = 1 };
+		public ISynthComponent Gain { get; set; } = FixedValue.One;
 
 		/// <summary>
 		/// The amplifier input.

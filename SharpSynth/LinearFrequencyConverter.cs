@@ -1,4 +1,5 @@
 ﻿using System;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -7,7 +8,7 @@ namespace SharpSynth
 	/// </summary>
 	public class LinearFrequencyConverter : SynthComponent
 	{
-		public ControlInput BaseFrequency { get; } = new ControlInput();
+		public ControlValue BaseFrequency { get; } = new ControlValue();
 
 		public ISynthComponent Input { get; set; }
 

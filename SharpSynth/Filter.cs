@@ -1,4 +1,5 @@
 using System;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -21,9 +22,9 @@ namespace SharpSynth
 
 		public FilterType FilterType { get; set; }
 
-		public ControlInput CornerFrequency { get; } = new ControlInput { BaseValue = 440 };
+		public ControlValue CornerFrequency { get; } = new ControlValue { BaseValue = 440 };
 
-		public ControlInput Q { get; } = new ControlInput { BaseValue = 5 };
+		public ControlValue Q { get; } = new ControlValue { BaseValue = 5 };
 
 		public ISynthComponent Input { get; set; }
 

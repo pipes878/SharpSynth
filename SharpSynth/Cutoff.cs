@@ -1,10 +1,11 @@
 ﻿using System;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
 	public class Cutoff : SynthComponent
 	{
-		public ControlInput CutoffThreshold { get; } = new ControlInput();
+		public ControlValue CutoffThreshold { get; } = new ControlValue();
 
 		public bool CutBelow { get; set; }
 

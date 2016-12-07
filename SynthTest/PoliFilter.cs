@@ -1,13 +1,14 @@
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
 	public class PoliFilter
 	{
-		private ControlInput lfoInput;
-		private ControlInput triggerInput;
-		private ControlInput envelopeOutput;
-		private ControlInput filterControlInput;
+		private ControlValue lfoInput;
+		private ControlValue triggerInput;
+		private ControlValue envelopeOutput;
+		private ControlValue filterControlValue;
 		private Filter filter;
 		private EnvelopeGenerator envelope;
 		private Mixer mixer;
@@ -32,8 +33,8 @@ namespace SynthTest
 
 		public float Cutoff
 		{
-			get { return filterControlInput.BaseValue; }
-			set { filterControlInput.BaseValue = value; }
+			get { return filterControlValue.BaseValue; }
+			set { filterControlValue.BaseValue = value; }
 		}
 
 		public float LfoLevel
@@ -87,18 +88,18 @@ namespace SynthTest
 
 		public PoliFilter()
 		{
-			triggerInput = new ControlInput();
+			triggerInput = new ControlValue();
 
-			lfoInput = new ControlInput();
+			lfoInput = new ControlValue();
 			envelope = new EnvelopeGenerator();
 			envelope.Input = triggerInput;
-			envelopeOutput = new ControlInput();
+			envelopeOutput = new ControlValue();
 			envelopeOutput.Control = envelope;
-			filterControlInput = new ControlInput();
+			filterControlValue = new ControlValue();
 			mixer = new Mixer();
 			mixer.Inputs.Add(envelopeOutput);
 			mixer.Inputs.Add(lfoInput);
-			mixer.Inputs.Add(filterControlInput);
+			mixer.Inputs.Add(filterControlValue);
 
 			filter = new Filter();
 			// Don't know about this.

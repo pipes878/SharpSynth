@@ -1,5 +1,6 @@
 using System.Dynamic;
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
@@ -7,10 +8,10 @@ namespace SynthTest
 	{
 		#region Fields
 
-		private ControlInput octave;
-		private ControlInput detune;
-		private ControlInput cvIn;
-		private ControlInput lfoMod;
+		private ControlValue octave;
+		private ControlValue detune;
+		private ControlValue cvIn;
+		private ControlValue lfoMod;
 
 		private Mixer controlInputMix;
 		private LinearFrequencyConverter frequencyConverter;
@@ -82,10 +83,10 @@ namespace SynthTest
 
 		public Vco()
 		{
-			octave = new ControlInput();
-			detune = new ControlInput();
-			cvIn = new ControlInput();
-			lfoMod = new ControlInput { Gain = 0 };
+			octave = new ControlValue();
+			detune = new ControlValue();
+			cvIn = new ControlValue();
+			lfoMod = new ControlValue { Gain = 0 };
 			XModLevel = 0;
 
 			controlInputMix = new Mixer();

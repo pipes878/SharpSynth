@@ -45,12 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amplifier.cs" />
-    <Compile Include="ControlInput.cs" />
+    <Compile Include="Input\ControlValue.cs" />
     <Compile Include="Cutoff.cs" />
     <Compile Include="Delay.cs" />
     <Compile Include="EnvelopeGenerator.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="Input\FixedValue.cs" />
     <Compile Include="GateGenerator.cs" />
+    <Compile Include="Input\RangeValue.cs" />
     <Compile Include="ISynthComponent.cs" />
     <Compile Include="LinearFrequencyConverter.cs" />
     <Compile Include="Mixer.cs" />

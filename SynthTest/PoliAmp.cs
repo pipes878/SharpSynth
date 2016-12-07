@@ -1,5 +1,6 @@
 using System;
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
@@ -9,7 +10,7 @@ namespace SynthTest
 		private Amplifier envelopeAmp;
 		private Amplifier finalAmp;
 		private EnvelopeGenerator envelope;
-		private ControlInput lfoInput;
+		private ControlValue lfoInput;
 
 		public ISynthComponent Input
 		{
@@ -49,8 +50,8 @@ namespace SynthTest
 
 		public float LfoLevel
 		{
-			get { return lfoAmp.Gain.BaseValue; }
-			set { lfoAmp.Gain.BaseValue = value; }
+			get { return ((RangeValue)lfoAmp.Gain).Value; }
+			set { ((RangeValue)lfoAmp.Gain).Value = value; }
 		}
 
 		public ISynthComponent LfoInput
@@ -63,27 +64,25 @@ namespace SynthTest
 
 		public float Gain
 		{
-			get { return finalAmp.Gain.Gain; }
-			set { finalAmp.Gain.Gain = value; }
+			get { return ((ControlValue)finalAmp.Gain).Gain; }
+			set { ((ControlValue)finalAmp.Gain).Gain = value; }
 		}
 
 		public PoliAmp()
 		{
 			lfoAmp = new Amplifier();
-			lfoAmp.Gain.BaseValue = 0;
+			lfoAmp.Gain = new RangeValue(0, 2);
 
-			lfoInput = new ControlInput { BaseValue = 1f };
+			lfoInput = new ControlValue { BaseValue = 1f };
 			lfoInput.Control = lfoAmp;
 
 			envelope = new EnvelopeGenerator();
 			envelopeAmp = new Amplifier();
-			envelopeAmp.Gain.BaseValue = 0;
-			envelopeAmp.Gain.Control = envelope;
+			envelopeAmp.Gain = envelope;
 			envelopeAmp.Input = lfoInput;
 
 			finalAmp = new Amplifier();
-			finalAmp.Gain.BaseValue = 0;
-			finalAmp.Gain.Control = envelopeAmp;
+			finalAmp.Gain = new ControlValue { Control = envelopeAmp };
 		}
 	}
 }

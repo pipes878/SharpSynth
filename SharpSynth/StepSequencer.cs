@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
 	public class StepSequencer : SynthComponent
 	{
 		private int currentControl = -1;
-		private readonly ControlInput[] controlValues;
+		private readonly ControlValue[] controlValues;
 		private float lastTriggerInput;
 		private readonly float[][] generatedControlValues;
 
-		public ControlInput TriggerSource { get; } = new ControlInput();
+		public ControlValue TriggerSource { get; } = new ControlValue();
 
-		public ControlInput TriggerThreshold { get; } = new ControlInput { BaseValue = 0.5f };
+		public ControlValue TriggerThreshold { get; } = new ControlValue { BaseValue = 0.5f };
 
-		public ReadOnlyCollection<ControlInput> ControlValues { get; }
+		public ReadOnlyCollection<ControlValue> ControlValues { get; }
 
 		public StepSequencer(int stepCount)
 		{
-			controlValues = new ControlInput[stepCount];
+			controlValues = new ControlValue[stepCount];
 			for (var i = 0; i < stepCount; i++)
-				controlValues[i] = new ControlInput();
+				controlValues[i] = new ControlValue();
 
-			ControlValues = new ReadOnlyCollection<ControlInput>(controlValues);
+			ControlValues = new ReadOnlyCollection<ControlValue>(controlValues);
 			generatedControlValues = new float[stepCount][];
 		}
 

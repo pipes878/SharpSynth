@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -18,12 +19,12 @@ namespace SharpSynth
 		/// <summary>
 		/// The threshold that must be crossed for the trigger to activate.
 		/// </summary>
-		public ControlInput TriggerThreshold { get; } = new ControlInput { BaseValue = 0.5f };
+		public ControlValue TriggerThreshold { get; } = new ControlValue { BaseValue = 0.5f };
 
 		/// <summary>
 		/// The length in seconds that the trigger should last.
 		/// </summary>
-		public ControlInput TriggerLength { get; } = new ControlInput { BaseValue = 0.1f };
+		public ControlValue TriggerLength { get; } = new ControlValue { BaseValue = 0.1f };
 
 		public SynthComponent Input { get; set; }
 

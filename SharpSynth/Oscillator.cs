@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SharpSynth.Input;
 
 namespace SharpSynth
 {
@@ -41,12 +42,12 @@ namespace SharpSynth
 		/// <summary>
 		/// Frequency value in Hz.
 		/// </summary>
-		public ControlInput Frequency { get; } = new ControlInput { BaseValue = 0 };
+		public ControlValue Frequency { get; } = new ControlValue { BaseValue = 0 };
 
 		/// <summary>
 		/// PWM control for the square wave.
 		/// </summary>
-		public ControlInput SquarePwm { get; } = new ControlInput { BaseValue = 0.5f };
+		public ControlValue SquarePwm { get; } = new ControlValue { BaseValue = 0.5f };
 
 		#region Implementation of ISynthComponent
 

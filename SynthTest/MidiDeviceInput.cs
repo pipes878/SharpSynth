@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using NAudio.Midi;
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
@@ -26,8 +27,8 @@ namespace SynthTest
 				midi.Start();
 			}
 
-			GateOutput = new ControlInput { BaseValue = 0 };
-			ControlOutput = new ControlInput { BaseValue = 0 };
+			GateOutput = new ControlValue { BaseValue = 0 };
+			ControlOutput = new ControlValue { BaseValue = 0 };
 		}
 
 		private void MidiOnMessageReceived(object sender, MidiInMessageEventArgs e)
@@ -55,12 +56,12 @@ namespace SynthTest
 
 			if (pressedNotes.Any())
 			{
-				((ControlInput)ControlOutput).BaseValue = ((float)pressedNotes.Average() - 57) / 12f;
-				((ControlInput)GateOutput).BaseValue = 1;
+				((ControlValue)ControlOutput).BaseValue = ((float)pressedNotes.Average() - 57) / 12f;
+				((ControlValue)GateOutput).BaseValue = 1;
 			}
 			else
 			{
-				((ControlInput)GateOutput).BaseValue = 0;
+				((ControlValue)GateOutput).BaseValue = 0;
 			}
 		}
 	}
