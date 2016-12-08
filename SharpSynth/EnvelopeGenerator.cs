@@ -7,6 +7,7 @@ namespace SharpSynth
 	/// Generates a basic linear envelope.
 	/// </summary>
 	/// <remarks>
+	/// The envelope will trigger whenever the input crosses 0.5
 	/// This is a basic envelope generator, the attack will go from 0 to 1, at the rate specified in the Attack parameter. A value of 1 will take 1 second to finish the attack phase.
 	/// Once attack is hit, it will decay at the rate specified in the Decay parameter.
 	/// Sustain is the level that the envelope will sit at while the input is still above the threshold.
@@ -14,6 +15,8 @@ namespace SharpSynth
 	/// </remarks>
 	public class EnvelopeGenerator : SynthComponent
 	{
+		#region Types
+
 		private enum Phase
 		{
 			Idle,
@@ -23,45 +26,46 @@ namespace SharpSynth
 			Release
 		}
 
+		#endregion
+
+		#region Fields
+
 		private Phase phase = Phase.Idle;
 		private float lastInputValue;
 		private float lastOutputValue;
 
+		#endregion
 
-		/// <summary>
-		/// The threshold that must be crossed for the envelope to activate.
-		/// </summary>
-		public ControlValue TriggerThreshold { get; } = new ControlValue { BaseValue = 0.5f };
-
-		/// <summary>
-		/// Should the trigger detect rising or falling edges on the input signal?
-		/// </summary>
-		public bool TriggerOnFallingEdge { get; set; }
+		#region Properties
 
 		/// <summary>
 		/// The time the envelope will take to go from 0 to 1 in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlValue Attack { get; } = new ControlValue { BaseValue = .05f };
+		public ISynthComponent Attack { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// The time the envelope will take to go from 1 to sustain level in seconds. This value will clamp at 0.
 		/// </summary>
-		public ControlValue Decay { get; } = new ControlValue { BaseValue = .1f };
+		public ISynthComponent Decay { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// The level that the envelope will sustain at. Note that this value can be above 1 to have a sustain value above attack.
 		/// </summary>
-		public ControlValue Sustain { get; } = new ControlValue { BaseValue = .5f };
+		public ISynthComponent Sustain { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// The time that the envelopw will take to release. Note that the rate of release is determined by the distance from sustain to 0.
 		/// </summary>
-		public ControlValue Release { get; } = new ControlValue { BaseValue = .3f };
+		public ISynthComponent Release { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// The input used to trigger the envelope.
 		/// </summary>
 		public ISynthComponent Input { get; set; }
+
+		#endregion
+
+		#region Overrides of SynthComponent
 
 		/// <summary>
 		/// Generate synthesizer samples.
@@ -79,7 +83,6 @@ namespace SharpSynth
 				return;
 			}
 
-			var triggerTreshold = TriggerThreshold.GenerateSamples(count, timeBase);
 			var sampleData = Input.GenerateSamples(count, timeBase);
 			var attack = Attack.GenerateSamples(count, timeBase);
 			var decay = Decay.GenerateSamples(count, timeBase);
@@ -92,14 +95,14 @@ namespace SharpSynth
 				{
 					// look for trigger.
 
-					if (((lastInputValue < triggerTreshold[i]) ^ TriggerOnFallingEdge) && ((sampleData[i] >= triggerTreshold[i]) ^ TriggerOnFallingEdge))
+					if ((lastInputValue < 0.5f) && (sampleData[i] >= 0.5f))
 						phase = Phase.Attack;
 				}
 				else
 				{
 					// Look for release.
 
-					if (((lastInputValue > triggerTreshold[i]) ^ TriggerOnFallingEdge) && ((sampleData[i] <= triggerTreshold[i]) ^ TriggerOnFallingEdge))
+					if ((lastInputValue > 0.5f) && (sampleData[i] <= 0.5f))
 						phase = Phase.Release;
 				}
 
@@ -178,7 +181,8 @@ namespace SharpSynth
 				lastOutputValue = buffer[i];
 				lastInputValue = sampleData[i];
 			}
-
 		}
+
+		#endregion
 	}
 }

@@ -6,6 +6,11 @@ namespace SynthTest
 {
 	public class PoliAmp
 	{
+		private RangeValue attack;
+		private RangeValue decay;
+		private RangeValue sustain;
+		private RangeValue release;
+
 		private Amplifier lfoAmp;
 		private Amplifier envelopeAmp;
 		private Amplifier finalAmp;
@@ -26,26 +31,26 @@ namespace SynthTest
 
 		public float Attack
 		{
-			get { return envelope.Attack.BaseValue; }
-			set { envelope.Attack.BaseValue = value; }
+			get { return attack.Value; }
+			set { attack.Value = value; }
 		}
 
 		public float Decay
 		{
-			get { return envelope.Decay.BaseValue; }
-			set { envelope.Decay.BaseValue = value; }
+			get { return decay.Value; }
+			set { decay.Value = value; }
 		}
 
 		public float Sustain
 		{
-			get { return envelope.Sustain.BaseValue; }
-			set { envelope.Sustain.BaseValue = value; }
+			get { return sustain.Value; }
+			set { sustain.Value = value; }
 		}
 
 		public float Release
 		{
-			get { return envelope.Release.BaseValue; }
-			set { envelope.Release.BaseValue = value; }
+			get { return release.Value; }
+			set { release.Value = value; }
 		}
 
 		public float LfoLevel
@@ -76,7 +81,14 @@ namespace SynthTest
 			lfoInput = new ControlValue { BaseValue = 1f };
 			lfoInput.Control = lfoAmp;
 
-			envelope = new EnvelopeGenerator();
+			envelope = new EnvelopeGenerator
+			{
+				Attack = attack = new RangeValue(0.0005f, 5),
+				Decay = decay = new RangeValue(0.0005f, 5),
+				Sustain = sustain = new RangeValue(0, 1),
+				Release = release = new RangeValue(0.0005f, 5)
+			};
+
 			envelopeAmp = new Amplifier();
 			envelopeAmp.Gain = envelope;
 			envelopeAmp.Input = lfoInput;
