@@ -16,7 +16,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The feedback amount.
 		/// </summary>
-		public ControlValue FeedbackAmount { get; } = new ControlValue { BaseValue = .5f };
+		public ISynthComponent FeedbackAmount { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// 

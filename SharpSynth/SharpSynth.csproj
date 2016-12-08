@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Amplifier.cs" />
     <Compile Include="Input\ControlValue.cs" />
-    <Compile Include="Cutoff.cs" />
+    <Compile Include="Clipper.cs" />
     <Compile Include="Delay.cs" />
     <Compile Include="EnvelopeGenerator.cs" />
     <Compile Include="Filter.cs" />

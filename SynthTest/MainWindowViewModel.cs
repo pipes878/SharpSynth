@@ -6,6 +6,7 @@ using NAudio.Midi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using SharpSynth;
+using SharpSynth.Input;
 
 namespace SynthTest
 {
@@ -27,7 +28,7 @@ namespace SynthTest
 
 		private readonly StepSequencer sequencer = new StepSequencer(8);
 
-		private readonly Delay delay = new Delay();
+		private readonly Delay delay = new Delay { FeedbackAmount = new RangeValue(0, 1) { Value = 0.2f } };
 
 		private MidiDeviceInput midi;
 

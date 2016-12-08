@@ -1,5 +1,4 @@
 using System;
-using System.Net.Mail;
 using SharpSynth.Input;
 
 namespace SharpSynth
@@ -27,7 +26,6 @@ namespace SharpSynth
 		private Phase phase = Phase.Idle;
 		private float lastInputValue;
 		private float lastOutputValue;
-		private long? triggerActivationTime;
 
 
 		/// <summary>

@@ -40,7 +40,7 @@
 					<TextBlock Text="Delay"/>
 					<TextBlock Text="Feedback"/>
 					<Slider Minimum="0" Maximum="2" Value="{Binding DelayAmount}"/>
-					<Slider Minimum="0" Maximum="1" Value="{Binding FeedbackAmount.BaseValue}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding FeedbackAmount.Value}"/>
 				</UniformGrid>
 			</StackPanel>
 		</DataTemplate>

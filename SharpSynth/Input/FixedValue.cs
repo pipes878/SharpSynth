@@ -11,6 +11,11 @@ namespace SharpSynth.Input
 		public static readonly FixedValue One = new FixedValue(1);
 
 		/// <summary>
+		/// Generates a fixed value of 0.5.
+		/// </summary>
+		public static readonly FixedValue Half = new FixedValue(0.5f);
+
+		/// <summary>
 		/// Generates a fixed value of 0.
 		/// </summary>
 		public static readonly FixedValue Zero = new FixedValue(0);
