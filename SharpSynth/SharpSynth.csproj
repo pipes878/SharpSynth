@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllPassFilter.cs" />
     <Compile Include="Amplifier.cs" />
+    <Compile Include="CombFilter.cs" />
     <Compile Include="Input\ControlValue.cs" />
     <Compile Include="Clipper.cs" />
     <Compile Include="Delay.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Noise.cs" />
     <Compile Include="Oscillator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reverb.cs" />
     <Compile Include="StepSequencer.cs" />
     <Compile Include="SynthComponent.cs" />
     <Compile Include="SynthToSampleProvider.cs" />

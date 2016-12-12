@@ -29,6 +29,7 @@ namespace SynthTest
 		private readonly StepSequencer sequencer = new StepSequencer(8);
 
 		private readonly Delay delay = new Delay { FeedbackAmount = new RangeValue(0, 1) { Value = 0.2f } };
+		private readonly Reverb reverb = new Reverb();
 
 		private MidiDeviceInput midi;
 
@@ -133,28 +134,29 @@ namespace SynthTest
 
 			midi = new MidiDeviceInput();
 			filter.Input = mixer.Output;
-			filter.TriggerInput = midi.GateOutput;
+			filter.TriggerInput = trigger;//midi.GateOutput;
 			filter.LfoInput = lfo.Output;
 
 			amp.LfoInput = lfo.Output;
-			amp.TriggerInput = midi.GateOutput;
+			amp.TriggerInput = trigger;//midi.GateOutput;
 			amp.Input = filter.Output;
 
 			sequencer.TriggerSource.Control = trigger;
 
-			vco1.ControlInput = midi.ControlOutput;
-			vco2.ControlInput = midi.ControlOutput;
+			vco1.ControlInput = sequencer;//midi.ControlOutput;
+			vco2.ControlInput = sequencer;//midi.ControlOutput;
 
 			delay.Input = amp.Output;
+			reverb.Input = delay;
 
 			trigger.Input = oscillator;
-			trigger.TriggerThreshold.BaseValue = 1;
+			trigger.TriggerThreshold.BaseValue = 0;
 			trigger.TriggerLength.BaseValue = .5f;
 
 			//cutoff.Input = Osc1;
 			//cutoff.CutoffThreshold.Control = envelope;
 
-			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(delay)));
+			waveOut.Init(new SampleToWaveProvider16(new SynthToSampleProvider(reverb)));
 			waveOut.Play();
 
 			midi.ControlEvent += MidiOnControlEvent;
