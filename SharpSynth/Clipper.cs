@@ -28,7 +28,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The clip threshold. This value is clamped between 0 and 1.
 		/// </summary>
-		public ISynthComponent Threshold { get; } = FixedValue.One;
+		public ISynthComponent Threshold { get; set; } = FixedValue.One;
 
 		/// <summary>
 		/// The clipping type.
@@ -78,7 +78,7 @@ namespace SharpSynth
 						var t = Math.Max(0, Math.Min(threshold[i], 1));
 						var absIn = Math.Abs(input[i]);
 						if (absIn <= t)
-							buffer[i] = t;
+							buffer[i] = input[i];
 						else
 						{
 							buffer[i] = (t * t - t + absIn) / input[i];

@@ -14,7 +14,7 @@ namespace SharpSynth
 		/// <summary>
 		/// The mix of the dry signal and the wet signal, with 0 being completely dry, and 1 being completely wet.
 		/// </summary>
-		public ISynthComponent Mix { get; set; } = new FixedValue(.2f);
+		public ISynthComponent Mix { get; set; } = FixedValue.Half;
 
 		/// <summary>
 		/// The input to the reverb.
@@ -59,7 +59,7 @@ namespace SharpSynth
 
 			var input = Input.GenerateSamples(count, timeBase);
 			var mix = Mix.GenerateSamples(count, timeBase);
-			var reverb = allPassFilters[1].GenerateSamples(count, timeBase);
+			var reverb = combMixer.GenerateSamples(count, timeBase);//allPassFilters[1].GenerateSamples(count, timeBase));
 
 			for (var i = 0; i < buffer.Length; i++)
 			{

@@ -30,7 +30,7 @@ namespace SynthTest
 
 		private readonly Delay delay = new Delay { FeedbackAmount = new RangeValue(0, 1) { Value = 0.2f } };
 		private readonly Reverb reverb = new Reverb();
-
+		private readonly Clipper clipper = new Clipper { ClippingType = ClippingType.Soft, Threshold = new FixedValue(0.65f) };
 		private MidiDeviceInput midi;
 
 		private WaveOut waveOut;
@@ -134,20 +134,21 @@ namespace SynthTest
 
 			midi = new MidiDeviceInput();
 			filter.Input = mixer.Output;
-			filter.TriggerInput = trigger;//midi.GateOutput;
+			filter.TriggerInput = midi.GateOutput;//trigger;
 			filter.LfoInput = lfo.Output;
 
 			amp.LfoInput = lfo.Output;
-			amp.TriggerInput = trigger;//midi.GateOutput;
+			amp.TriggerInput = midi.GateOutput;//trigger;
 			amp.Input = filter.Output;
 
 			sequencer.TriggerSource.Control = trigger;
 
-			vco1.ControlInput = sequencer;//midi.ControlOutput;
-			vco2.ControlInput = sequencer;//midi.ControlOutput;
+			vco1.ControlInput = midi.ControlOutput;//sequencer;
+			vco2.ControlInput = midi.ControlOutput;//sequencer;
 
 			delay.Input = amp.Output;
-			reverb.Input = delay;
+			clipper.Input = delay;
+			reverb.Input = clipper;
 
 			trigger.Input = oscillator;
 			trigger.TriggerThreshold.BaseValue = 0;
