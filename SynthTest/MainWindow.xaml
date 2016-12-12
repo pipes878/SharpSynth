@@ -123,10 +123,10 @@
 					<TextBlock Text="Sustain"/>
 					<TextBlock Text="Release"/>
 					<TextBlock Text=""/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Attack}"/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Decay}"/>
-					<Slider Minimum="0" Maximum="2" Value="{Binding Sustain}"/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Release}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Attack}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Decay}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Release}"/>
 					<TextBlock Text=""/>
 					<TextBlock Text="Filter Type"/>
 					<TextBlock Text="LFO Level"/>
@@ -150,10 +150,10 @@
 					<TextBlock Text="Sustain"/>
 					<TextBlock Text="Release"/>
 					<TextBlock Text="LFO Level"/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Attack}"/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Decay}"/>
-					<Slider Minimum="0" Maximum="2" Value="{Binding Sustain}"/>
-					<Slider Minimum="0.01" Maximum="2" Value="{Binding Release}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Attack}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Decay}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Sustain}"/>
+					<Slider Minimum="0" Maximum="1" Value="{Binding Release}"/>
 					<Slider Minimum="0" Maximum="4" Value="{Binding LfoLevel}"/>
 				</UniformGrid>
 			</StackPanel>
