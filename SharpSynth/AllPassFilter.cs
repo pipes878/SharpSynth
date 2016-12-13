@@ -35,7 +35,7 @@ namespace SharpSynth
 			{
 				var output = delayBuffer[pos];
 				delayBuffer[pos] = input[i] + output * g;
-				buffer[i] = output - g * input[i];
+				buffer[i] = output - g * delayBuffer[pos];
 				pos = (pos + 1) % delayBuffer.Length;
 			}
 		}

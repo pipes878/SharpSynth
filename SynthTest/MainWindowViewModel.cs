@@ -148,7 +148,7 @@ namespace SynthTest
 
 			delay.Input = amp.Output;
 			clipper.Input = delay;
-			reverb.Input = clipper;
+			reverb.Input = amp.Output;
 
 			trigger.Input = oscillator;
 			trigger.TriggerThreshold.BaseValue = 0;

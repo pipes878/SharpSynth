@@ -59,7 +59,7 @@ namespace SharpSynth
 
 			var input = Input.GenerateSamples(count, timeBase);
 			var mix = Mix.GenerateSamples(count, timeBase);
-			var reverb = combMixer.GenerateSamples(count, timeBase);//allPassFilters[1].GenerateSamples(count, timeBase));
+			var reverb = allPassFilters[1].GenerateSamples(count, timeBase);
 
 			for (var i = 0; i < buffer.Length; i++)
 			{
