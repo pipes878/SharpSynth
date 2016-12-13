@@ -56,10 +56,10 @@ namespace SharpSynth
 		/// </summary>
 		/// <param name="buffer">The buffer to generate into.</param>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
-			const double AngleInc = Tables.TableSize / 44100.0;
+			double angleInc = Tables.TableSize / (float)SampleRate;
 
 			float[] table;
 			if (!ShapeTables.TryGetValue(Shape, out table) && Shape != OscillatorShape.Square)
@@ -80,7 +80,7 @@ namespace SharpSynth
 					var pw = pwm[i] * Tables.TableSize;
 					buffer[i] = a < pw ? 1 : 0;
 
-					angle += frequency[i] * AngleInc;
+					angle += frequency[i] * angleInc;
 					if (angle > Tables.TableSize)
 						angle -= Tables.TableSize;
 				}
@@ -90,7 +90,7 @@ namespace SharpSynth
 				for (var i = 0; i < count; i++)
 				{
 					buffer[i] = table[(int)(Tables.TableSize + angle) & Tables.TableMask];
-					angle += frequency[i] * AngleInc;
+					angle += frequency[i] * angleInc;
 					if (angle > Tables.TableSize)
 						angle -= Tables.TableSize;
 				}

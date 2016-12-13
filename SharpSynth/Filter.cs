@@ -13,7 +13,7 @@ namespace SharpSynth
 
 	public class Filter : SynthComponent
 	{
-		private const float Dt = 1f / 44100.0f;
+		//private const float Dt = 1f / 44100.0f;
 
 		private float lowPass;
 		private float bandPass;
@@ -35,13 +35,13 @@ namespace SharpSynth
 		/// </summary>
 		/// <param name="buffer">The buffer to generate into.</param>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
 			if (Input == null)
 			{
 				for (var i = 0; i < count; i++)
-					buffer[i++] = 0;
+					buffer[i] = 0;
 
 				return;
 			}
@@ -52,7 +52,7 @@ namespace SharpSynth
 
 			for (var i = 0; i < count; i++)
 			{
-				var index = (int)((Tables.TableSize / 2f) * (cutoff[i] / 44100f));
+				var index = (int)((Tables.TableSize / 2f) * (cutoff[i] / SampleRate));
 				if (index < 0)
 					index = 0;
 				else if (index > Tables.TableSize / 2)

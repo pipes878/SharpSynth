@@ -35,7 +35,7 @@ namespace SharpSynth
 		/// </summary>
 		/// <param name="buffer">The buffer to generate into.</param>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
 			if (Input == null)
@@ -54,7 +54,7 @@ namespace SharpSynth
 			{
 				if (triggerActivationTime != null)
 				{
-					while (timeBase - triggerActivationTime < triggerLength[i] * 44100)
+					while (timeBase - triggerActivationTime < triggerLength[i] * SampleRate)
 					{
 						buffer[i] = 1;
 						timeBase++;

@@ -55,7 +55,7 @@ namespace SharpSynth.Input
 		/// Generate samples from the synth component.
 		/// </summary>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		/// <returns>The generated samples.</returns>
 		public float[] GenerateSamples(int count, long timeBase)
 		{

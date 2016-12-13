@@ -72,7 +72,7 @@ namespace SharpSynth
 		/// </summary>
 		/// <param name="buffer">The buffer to generate into.</param>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
 			if (Input == null)
@@ -113,7 +113,7 @@ namespace SharpSynth
 						break;
 					case Phase.Attack:
 					{
-						var inc = attack[i] * 44100.0f;
+						var inc = attack[i] * SampleRate;
 						if (inc <= 1)
 							buffer[i] = 1f;
 						else
@@ -129,7 +129,7 @@ namespace SharpSynth
 
 					case Phase.Decay:
 					{
-						var inc = (1f - sustain[i]) * decay[i] * 44100.0f;
+						var inc = (1f - sustain[i]) * decay[i] * SampleRate;
 						if (Math.Abs(inc) <= 1)
 							buffer[i] = sustain[i];
 						else
@@ -163,7 +163,7 @@ namespace SharpSynth
 
 					case Phase.Release:
 					{
-						var inc = sustain[i] * release[i] * 44100.0f;
+						var inc = sustain[i] * release[i] * SampleRate;
 						if (inc <= 1)
 							buffer[i] = 0f;
 						else

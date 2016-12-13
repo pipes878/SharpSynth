@@ -23,13 +23,13 @@ namespace SharpSynth
 		/// </summary>
 		/// <param name="buffer">The buffer to generate into.</param>
 		/// <param name="count">The number of samples to generate.</param>
-		/// <param name="timeBase">The time base for the new samples. This value is in samples, which is measured at 44100 samples per second.</param>
+		/// <param name="timeBase">The time base for the new samples. This value is in samples.</param>
 		protected override void GenerateSamples(float[] buffer, int count, long timeBase)
 		{
 			if (Input == null)
 			{
 				for (var i = 0; i < count; i++)
-					buffer[i++] = 0;
+					buffer[i] = 0;
 				return;
 			}
 

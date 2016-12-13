@@ -5,16 +5,18 @@ namespace SharpSynth
 {
 	public class SynthToSampleProvider : ISampleProvider
 	{
+		public static readonly int SampleRate = 48000;
+
 		private long timeBase;
 
-		public SynthComponent SynthInput { get; set; }
+		public ISynthComponent SynthInput { get; set; }
 
 		public SynthToSampleProvider()
 		{
-			WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 1);
+			WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, 2);
 		}
 
-		public SynthToSampleProvider(SynthComponent synthInput) : this()
+		public SynthToSampleProvider(ISynthComponent synthInput) : this()
 		{
 			SynthInput = synthInput;
 		}
@@ -36,7 +38,7 @@ namespace SharpSynth
 		public int Read(float[] buffer, int offset, int count)
 		{
 			var t = timeBase;
-			timeBase += count;
+			timeBase += count / 2;
 
 			if (SynthInput == null)
 			{
@@ -48,7 +50,11 @@ namespace SharpSynth
 			}
 			else
 			{
-				Array.Copy(SynthInput.GenerateSamples(count, t), 0, buffer, offset, count);
+				var synthSamples = SynthInput.GenerateSamples(count / 2, t);
+				for (var i = 0; i < count; i += 2)
+				{
+					buffer[offset + i] = buffer[offset + i + 1] = synthSamples[i / 2];
+				}
 			}
 
 			return count;

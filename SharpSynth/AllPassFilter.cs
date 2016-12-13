@@ -13,7 +13,7 @@ namespace SharpSynth
 		public AllPassFilter(float delayTime)
 		{
 			g = (float)Math.Pow(0.001, delayTime / ReverbTimeDesired);
-			delayBuffer = new float[(int)(delayTime * 44100)];
+			delayBuffer = new float[(int)(delayTime * SampleRate)];
 		}
 
 		/// <summary>
